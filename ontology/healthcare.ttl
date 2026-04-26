@@ -1,0 +1,153 @@
+@prefix : <http://www.semanticweb.org/beyza/ontologies/2026/3/untitled-ontology-14/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://www.semanticweb.org/beyza/ontologies/2026/3/untitled-ontology-14/> .
+
+<http://example.org/healthcare-ontology> rdf:type owl:Ontology .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://www.semanticweb.org/beyza/ontologies/2026/3/untitled-ontology-14/hasSymptom
+:hasSymptom rdf:type owl:ObjectProperty ;
+            rdfs:subPropertyOf owl:topObjectProperty ;
+            rdfs:domain :Disease ;
+            rdfs:range :Symptom .
+
+
+###  http://www.semanticweb.org/beyza/ontologies/2026/3/untitled-ontology-14/hasTreatment
+:hasTreatment rdf:type owl:ObjectProperty ;
+              rdfs:subPropertyOf owl:topObjectProperty ;
+              rdfs:domain :Disease ;
+              rdfs:range :Treatment .
+
+
+###  http://www.semanticweb.org/beyza/ontologies/2026/3/untitled-ontology-14/possibleDiagnosis
+:possibleDiagnosis rdf:type owl:ObjectProperty ;
+                   rdfs:subPropertyOf owl:topObjectProperty ;
+                   rdfs:domain :Patient ;
+                   rdfs:range :Disease ;
+                   owl:propertyChainAxiom ( :reportsSymptom
+                                            [ owl:inverseOf :hasSymptom
+                                            ]
+                                          ) .
+
+
+###  http://www.semanticweb.org/beyza/ontologies/2026/3/untitled-ontology-14/reportsSymptom
+:reportsSymptom rdf:type owl:ObjectProperty ;
+                rdfs:subPropertyOf owl:topObjectProperty ;
+                rdfs:domain :Patient ;
+                rdfs:range :Symptom .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://www.semanticweb.org/beyza/ontologies/2026/3/untitled-ontology-14/Diagnosis
+:Diagnosis rdf:type owl:Class .
+
+
+###  http://www.semanticweb.org/beyza/ontologies/2026/3/untitled-ontology-14/Disease
+:Disease rdf:type owl:Class ;
+         owl:equivalentClass [ rdf:type owl:Restriction ;
+                               owl:onProperty :hasSymptom ;
+                               owl:someValuesFrom :Symptom
+                             ] ;
+         rdfs:subClassOf [ rdf:type owl:Restriction ;
+                           owl:onProperty :hasSymptom ;
+                           owl:someValuesFrom :Symptom
+                         ] ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty :hasTreatment ;
+                           owl:someValuesFrom :Treatment
+                         ] .
+
+
+###  http://www.semanticweb.org/beyza/ontologies/2026/3/untitled-ontology-14/Patient
+:Patient rdf:type owl:Class ;
+         owl:equivalentClass [ rdf:type owl:Restriction ;
+                               owl:onProperty :reportsSymptom ;
+                               owl:someValuesFrom :Symptom
+                             ] ;
+         rdfs:subClassOf [ rdf:type owl:Restriction ;
+                           owl:onProperty :possibleDiagnosis ;
+                           owl:someValuesFrom :Disease
+                         ] ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty :reportsSymptom ;
+                           owl:someValuesFrom :Symptom
+                         ] .
+
+
+###  http://www.semanticweb.org/beyza/ontologies/2026/3/untitled-ontology-14/Symptom
+:Symptom rdf:type owl:Class .
+
+
+###  http://www.semanticweb.org/beyza/ontologies/2026/3/untitled-ontology-14/Treatment
+:Treatment rdf:type owl:Class .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  http://example.org/healthcare-ontology#Asthma
+:Asthma rdf:type owl:NamedIndividual ,
+                 :Disease .
+
+
+###  http://example.org/healthcare-ontology#Cough
+:Cough rdf:type owl:NamedIndividual ,
+                :Symptom .
+
+
+###  http://example.org/healthcare-ontology#Covid19
+:Covid19 rdf:type owl:NamedIndividual ,
+                  :Disease .
+
+
+###  http://example.org/healthcare-ontology#Fever
+:Fever rdf:type owl:NamedIndividual ,
+                :Symptom .
+
+
+###  http://example.org/healthcare-ontology#Headache
+:Headache rdf:type owl:NamedIndividual ,
+                   :Symptom .
+
+
+###  http://example.org/healthcare-ontology#Influenza
+:Influenza rdf:type owl:NamedIndividual ,
+                    :Disease ;
+           :hasSymptom :Cough ,
+                       :Fever ,
+                       :Headache .
+
+
+###  http://example.org/healthcare-ontology#ShortnessOfBreath
+:ShortnessOfBreath rdf:type owl:NamedIndividual ,
+                            :Symptom .
+
+### Individuals (Symptoms)
+:Fever rdf:type owl:NamedIndividual , :Symptom .
+:Cough rdf:type owl:NamedIndividual , :Symptom .
+:Headache rdf:type owl:NamedIndividual , :Symptom .
+:ShortnessOfBreath rdf:type owl:NamedIndividual , :Symptom .
+
+### Individuals (Diseases)
+:Covid19 rdf:type owl:NamedIndividual , :Disease .
+:Influenza rdf:type owl:NamedIndividual , :Disease .
+:Asthma rdf:type owl:NamedIndividual , :Disease .
+
+### Relations
+:Covid19 :hasSymptom :Fever , :Cough , :ShortnessOfBreath .
+:Influenza :hasSymptom :Fever , :Cough , :Headache .
+:Asthma :hasSymptom :ShortnessOfBreath , :Cough .
+
+
+###  Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi
