@@ -1,0 +1,311 @@
+# ============================================================
+# Healthcare Diagnosis Ontology v4 — SPARQL Queries
+# 50 diseases | 20 patients | 103 symptoms | 99 treatments
+# Namespace: http://www.semanticweb.org/beyza/ontologies/2026/healthcare#
+# ============================================================
+
+PREFIX hdo: <http://www.semanticweb.org/beyza/ontologies/2026/healthcare#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+
+# ------------------------------------------------------------
+# Q1 — Basic Retrieval
+# CQ: Which symptoms does each disease have?
+# ------------------------------------------------------------
+SELECT ?diseaseLabel ?symptomLabel
+WHERE {
+  ?disease rdf:type hdo:Disease .
+  ?disease rdfs:label ?diseaseLabel .
+  ?disease hdo:hasSymptom ?symptom .
+  ?symptom rdfs:label ?symptomLabel .
+}
+ORDER BY ?diseaseLabel ?symptomLabel
+
+
+# ------------------------------------------------------------
+# Q2 — Basic Retrieval
+# CQ: Which symptoms does each patient report?
+# ------------------------------------------------------------
+SELECT ?patientLabel ?symptomLabel
+WHERE {
+  ?patient rdf:type hdo:Patient .
+  ?patient rdfs:label ?patientLabel .
+  ?patient hdo:reportsSymptom ?symptom .
+  ?symptom rdfs:label ?symptomLabel .
+}
+ORDER BY ?patientLabel ?symptomLabel
+
+
+# ------------------------------------------------------------
+# Q3 — Basic Retrieval
+# CQ: What diagnostic test is required for each patient?
+# ------------------------------------------------------------
+SELECT ?patientLabel ?testLabel
+WHERE {
+  ?patient rdf:type hdo:Patient .
+  ?patient rdfs:label ?patientLabel .
+  ?patient hdo:requiresTest ?test .
+  ?test rdfs:label ?testLabel .
+}
+ORDER BY ?patientLabel
+
+
+# ------------------------------------------------------------
+# Q4 — Basic Retrieval
+# CQ: Which clinical alerts are active and what are their messages?
+# ------------------------------------------------------------
+SELECT ?patientLabel ?alertLabel ?message
+WHERE {
+  ?patient rdf:type hdo:Patient .
+  ?patient rdfs:label ?patientLabel .
+  ?patient hdo:triggersAlert ?alert .
+  ?alert rdfs:label ?alertLabel .
+  ?alert hdo:hasAlertMessage ?message .
+}
+ORDER BY ?patientLabel
+
+
+# ------------------------------------------------------------
+# Q5 — Basic Retrieval
+# CQ: What is the full clinical profile of each patient?
+# ------------------------------------------------------------
+SELECT ?patientLabel ?age ?gender ?riskLevel ?feverStatus ?duration
+WHERE {
+  ?patient rdf:type hdo:Patient .
+  ?patient rdfs:label ?patientLabel .
+  ?patient hdo:hasAge ?age .
+  ?patient hdo:hasGender ?gender .
+  ?patient hdo:hasRiskLevel ?riskLevel .
+  ?patient hdo:hasFeverStatus ?feverStatus .
+  ?patient hdo:hasSymptomDuration ?duration .
+}
+ORDER BY DESC(?duration)
+
+
+# ------------------------------------------------------------
+# Q6 — Basic Retrieval
+# CQ: What treatments are available for each disease?
+# ------------------------------------------------------------
+SELECT ?diseaseLabel ?treatmentLabel
+WHERE {
+  ?disease rdf:type hdo:Disease .
+  ?disease rdfs:label ?diseaseLabel .
+  ?disease hdo:hasTreatment ?treatment .
+  ?treatment rdfs:label ?treatmentLabel .
+}
+ORDER BY ?diseaseLabel ?treatmentLabel
+
+
+# ------------------------------------------------------------
+# Q7 — Basic Retrieval
+# CQ: What is the DOID and category of each disease?
+# ------------------------------------------------------------
+SELECT ?diseaseLabel ?doid ?category
+WHERE {
+  ?disease rdf:type hdo:Disease .
+  ?disease rdfs:label ?diseaseLabel .
+  ?disease hdo:hasDOID ?doid .
+  ?disease hdo:hasCategory ?category .
+}
+ORDER BY ?category ?diseaseLabel
+
+
+# ------------------------------------------------------------
+# Q8 — Basic Retrieval
+# CQ: Which recommendations are assigned to each patient?
+# ------------------------------------------------------------
+SELECT ?patientLabel ?recLabel
+WHERE {
+  ?patient rdf:type hdo:Patient .
+  ?patient rdfs:label ?patientLabel .
+  ?patient hdo:hasRecommendation ?rec .
+  ?rec rdfs:label ?recLabel .
+}
+ORDER BY ?patientLabel
+
+
+# ------------------------------------------------------------
+# Q9 — Reasoning Query (Property Chain Inference)
+# CQ: Which diseases are inferred as possible diagnoses for each patient?
+# Requires OWL reasoner (HermiT/Pellet) or pre-asserted triples
+# ------------------------------------------------------------
+SELECT ?patientLabel ?diseaseLabel
+WHERE {
+  ?patient rdf:type hdo:Patient .
+  ?patient rdfs:label ?patientLabel .
+  ?patient hdo:possibleDiagnosis ?disease .
+  ?disease rdfs:label ?diseaseLabel .
+}
+ORDER BY ?patientLabel ?diseaseLabel
+
+
+# ------------------------------------------------------------
+# Q10 — Reasoning Query
+# CQ: Which patients share symptoms with Tuberculosis?
+# ------------------------------------------------------------
+SELECT DISTINCT ?patientLabel ?sharedSymptomLabel
+WHERE {
+  hdo:Tuberculosis hdo:hasSymptom ?symptom .
+  ?symptom rdfs:label ?sharedSymptomLabel .
+  ?patient rdf:type hdo:Patient .
+  ?patient rdfs:label ?patientLabel .
+  ?patient hdo:reportsSymptom ?symptom .
+}
+ORDER BY ?patientLabel
+
+
+# ------------------------------------------------------------
+# Q11 — Reasoning Query
+# CQ: Which patients meet the SWRL rule conditions?
+#     (symptom duration > 13 days AND fever = "Yes")
+# ------------------------------------------------------------
+SELECT ?patientLabel ?duration ?feverStatus ?riskLevel ?age
+WHERE {
+  ?patient rdf:type hdo:Patient .
+  ?patient rdfs:label ?patientLabel .
+  ?patient hdo:hasSymptomDuration ?duration .
+  ?patient hdo:hasFeverStatus ?feverStatus .
+  ?patient hdo:hasRiskLevel ?riskLevel .
+  ?patient hdo:hasAge ?age .
+  FILTER (?duration > 13 && ?feverStatus = "Yes")
+}
+ORDER BY DESC(?duration)
+
+
+# ------------------------------------------------------------
+# Q12 — Reasoning Query
+# CQ: Which patients have high risk AND are over 50 years old?
+# ------------------------------------------------------------
+SELECT ?patientLabel ?age ?riskLevel ?testLabel
+WHERE {
+  ?patient rdf:type hdo:Patient .
+  ?patient rdfs:label ?patientLabel .
+  ?patient hdo:hasAge ?age .
+  ?patient hdo:hasRiskLevel ?riskLevel .
+  ?patient hdo:requiresTest ?test .
+  ?test rdfs:label ?testLabel .
+  FILTER (?age > 50 && ?riskLevel = "High")
+}
+ORDER BY DESC(?age)
+
+
+# ------------------------------------------------------------
+# Q13 — Aggregation
+# CQ: How many symptoms does each disease have?
+# ------------------------------------------------------------
+SELECT ?diseaseLabel (COUNT(?symptom) AS ?symptomCount)
+WHERE {
+  ?disease rdf:type hdo:Disease .
+  ?disease rdfs:label ?diseaseLabel .
+  ?disease hdo:hasSymptom ?symptom .
+}
+GROUP BY ?diseaseLabel
+ORDER BY DESC(?symptomCount)
+
+
+# ------------------------------------------------------------
+# Q14 — Aggregation
+# CQ: How many diseases belong to each category?
+# ------------------------------------------------------------
+SELECT ?category (COUNT(?disease) AS ?diseaseCount)
+WHERE {
+  ?disease rdf:type hdo:Disease .
+  ?disease hdo:hasCategory ?category .
+}
+GROUP BY ?category
+ORDER BY DESC(?diseaseCount)
+
+
+# ------------------------------------------------------------
+# Q15 — Aggregation
+# CQ: How many patients are in each risk level group?
+# ------------------------------------------------------------
+SELECT ?riskLevel (COUNT(?patient) AS ?patientCount)
+WHERE {
+  ?patient rdf:type hdo:Patient .
+  ?patient hdo:hasRiskLevel ?riskLevel .
+}
+GROUP BY ?riskLevel
+ORDER BY DESC(?patientCount)
+
+
+# ------------------------------------------------------------
+# Q16 — Aggregation
+# CQ: Average symptom duration per risk level
+# ------------------------------------------------------------
+SELECT ?riskLevel (AVG(?duration) AS ?avgDuration) (COUNT(?patient) AS ?patientCount)
+WHERE {
+  ?patient rdf:type hdo:Patient .
+  ?patient hdo:hasRiskLevel ?riskLevel .
+  ?patient hdo:hasSymptomDuration ?duration .
+}
+GROUP BY ?riskLevel
+ORDER BY DESC(?avgDuration)
+
+
+# ------------------------------------------------------------
+# Q17 — Advanced Filter
+# CQ: Which diseases share the symptom "Fatigue"?
+# ------------------------------------------------------------
+SELECT ?diseaseLabel ?category
+WHERE {
+  ?disease rdf:type hdo:Disease .
+  ?disease rdfs:label ?diseaseLabel .
+  ?disease hdo:hasCategory ?category .
+  ?disease hdo:hasSymptom ?symptom .
+  ?symptom rdfs:label "Fatigue" .
+}
+ORDER BY ?category ?diseaseLabel
+
+
+# ------------------------------------------------------------
+# Q18 — Advanced Filter
+# CQ: Which Infectious diseases have more than 5 symptoms?
+# ------------------------------------------------------------
+SELECT ?diseaseLabel (COUNT(?symptom) AS ?count)
+WHERE {
+  ?disease rdf:type hdo:Disease .
+  ?disease rdfs:label ?diseaseLabel .
+  ?disease hdo:hasCategory "Infectious" .
+  ?disease hdo:hasSymptom ?symptom .
+}
+GROUP BY ?diseaseLabel
+HAVING (COUNT(?symptom) > 5)
+ORDER BY DESC(?count)
+
+
+# ------------------------------------------------------------
+# Q19 — Advanced Filter
+# CQ: Which female patients have High risk level?
+# ------------------------------------------------------------
+SELECT ?patientLabel ?age ?feverStatus ?duration
+WHERE {
+  ?patient rdf:type hdo:Patient .
+  ?patient rdfs:label ?patientLabel .
+  ?patient hdo:hasGender "Female" .
+  ?patient hdo:hasRiskLevel "High" .
+  ?patient hdo:hasAge ?age .
+  ?patient hdo:hasFeverStatus ?feverStatus .
+  ?patient hdo:hasSymptomDuration ?duration .
+}
+ORDER BY DESC(?age)
+
+
+# ------------------------------------------------------------
+# Q20 — Advanced Filter
+# CQ: Which patients have been symptomatic for more than 30 days?
+# ------------------------------------------------------------
+SELECT ?patientLabel ?duration ?riskLevel ?age ?testLabel
+WHERE {
+  ?patient rdf:type hdo:Patient .
+  ?patient rdfs:label ?patientLabel .
+  ?patient hdo:hasSymptomDuration ?duration .
+  ?patient hdo:hasRiskLevel ?riskLevel .
+  ?patient hdo:hasAge ?age .
+  ?patient hdo:requiresTest ?test .
+  ?test rdfs:label ?testLabel .
+  FILTER (?duration > 30)
+}
+ORDER BY DESC(?duration)

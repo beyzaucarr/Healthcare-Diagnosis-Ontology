@@ -1,0 +1,813 @@
+@prefix : <http://www.semanticweb.org/beyza/ontologies/2026/healthcare#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://www.semanticweb.org/beyza/ontologies/2026/healthcare#> .
+
+<http://www.semanticweb.org/beyza/ontologies/2026/healthcare> rdf:type owl:Ontology ;
+    rdfs:label "Healthcare Diagnosis Ontology v4" ;
+    rdfs:comment "Extended OWL ontology: 50 diseases, 20 patients, SWRL, SHACL, LLM integration." .
+
+############################  Object Properties
+:hasSymptom rdf:type owl:ObjectProperty ; rdfs:domain :Disease ; rdfs:range :Symptom ; rdfs:label "has symptom" .
+:hasTreatment rdf:type owl:ObjectProperty ; rdfs:domain :Disease ; rdfs:range :Treatment ; rdfs:label "has treatment" .
+:reportsSymptom rdf:type owl:ObjectProperty ; rdfs:domain :Patient ; rdfs:range :Symptom ; rdfs:label "reports symptom" .
+:possibleDiagnosis rdf:type owl:ObjectProperty ; rdfs:domain :Patient ; rdfs:range :Disease ; rdfs:label "possible diagnosis" ;
+    owl:propertyChainAxiom ( :reportsSymptom [ owl:inverseOf :hasSymptom ] ) .
+:requiresTest rdf:type owl:ObjectProperty ; rdfs:domain :Patient ; rdfs:range :DiagnosticTest ; rdfs:label "requires test" .
+:hasRiskAssessment rdf:type owl:ObjectProperty ; rdfs:domain :Patient ; rdfs:range :RiskAssessment ; rdfs:label "has risk assessment" .
+:triggersAlert rdf:type owl:ObjectProperty ; rdfs:domain :Patient ; rdfs:range :ClinicalAlert ; rdfs:label "triggers alert" .
+:basedOnObservation rdf:type owl:ObjectProperty ; rdfs:domain :Patient ; rdfs:range :PatientObservation ; rdfs:label "based on observation" .
+:hasRecommendation rdf:type owl:ObjectProperty ; rdfs:domain :Patient ; rdfs:range :DiagnosticRecommendation ; rdfs:label "has recommendation" .
+
+############################  Data Properties
+:hasSymptomDuration rdf:type owl:DatatypeProperty ; rdfs:domain :Patient ; rdfs:range xsd:integer .
+:hasFeverStatus rdf:type owl:DatatypeProperty ; rdfs:domain :Patient ; rdfs:range xsd:string .
+:hasRiskLevel rdf:type owl:DatatypeProperty ; rdfs:domain :Patient ; rdfs:range xsd:string .
+:hasAge rdf:type owl:DatatypeProperty ; rdfs:domain :Patient ; rdfs:range xsd:integer .
+:hasGender rdf:type owl:DatatypeProperty ; rdfs:domain :Patient ; rdfs:range xsd:string .
+:hasAlertMessage rdf:type owl:DatatypeProperty ; rdfs:domain :ClinicalAlert ; rdfs:range xsd:string .
+:hasDOID rdf:type owl:DatatypeProperty ; rdfs:domain :Disease ; rdfs:range xsd:string .
+:hasDescription rdf:type owl:DatatypeProperty ; rdfs:domain :Disease ; rdfs:range xsd:string .
+:hasCategory rdf:type owl:DatatypeProperty ; rdfs:domain :Disease ; rdfs:range xsd:string .
+
+############################  Classes
+:Patient rdf:type owl:Class ; rdfs:label "Patient" .
+:Disease rdf:type owl:Class ; rdfs:label "Disease" .
+:Symptom rdf:type owl:Class ; rdfs:label "Symptom" .
+:Treatment rdf:type owl:Class ; rdfs:label "Treatment" .
+:Diagnosis rdf:type owl:Class ; rdfs:label "Diagnosis" .
+:DiagnosticTest rdf:type owl:Class ; rdfs:label "Diagnostic Test" .
+:RiskAssessment rdf:type owl:Class ; rdfs:label "Risk Assessment" .
+:ClinicalAlert rdf:type owl:Class ; rdfs:label "Clinical Alert" .
+:PatientObservation rdf:type owl:Class ; rdfs:label "Patient Observation" .
+:DiagnosticRecommendation rdf:type owl:Class ; rdfs:label "Diagnostic Recommendation" .
+:ClinicalRule rdf:type owl:Class ; rdfs:label "Clinical Rule" .
+
+############################  Symptoms
+
+:AbdominalPain rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "AbdominalPain" .
+:Anemia rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "Anemia" .
+:Anxiety rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "Anxiety" .
+:ArmWeakness rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "ArmWeakness" .
+:BackPain rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "BackPain" .
+:Bloating rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "Bloating" .
+:BloodInUrine rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "BloodInUrine" .
+:BlurredVision rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "BlurredVision" .
+:BodyStiffness rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "BodyStiffness" .
+:BonePain rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "BonePain" .
+:BradyKinesia rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "BradyKinesia" .
+:ChestPain rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "ChestPain" .
+:ChestTightness rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "ChestTightness" .
+:Chills rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "Chills" .
+:Clubbing rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "Clubbing" .
+:Confusion rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "Confusion" .
+:Conjunctivitis rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "Conjunctivitis" .
+:Constipation rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "Constipation" .
+:Cough rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "Cough" .
+:DarkUrine rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "DarkUrine" .
+:Dehydration rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "Dehydration" .
+:Diarrhea rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "Diarrhea" .
+:Disorientation rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "Disorientation" .
+:Dizziness rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "Dizziness" .
+:DryCough rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "DryCough" .
+:DrySkin rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "DrySkin" .
+:EasyBruising rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "EasyBruising" .
+:ExcessiveSweating rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "ExcessiveSweating" .
+:ExcessiveThirst rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "ExcessiveThirst" .
+:ExcessiveWeightGain rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "ExcessiveWeightGain" .
+:FacialDropping rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "FacialDropping" .
+:Fainting rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "Fainting" .
+:Fatigue rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "Fatigue" .
+:Fever rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "Fever" .
+:Fractures rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "Fractures" .
+:FrequentInfections rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "FrequentInfections" .
+:FrequentUrination rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "FrequentUrination" .
+:HairLoss rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "HairLoss" .
+:Headache rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "Headache" .
+:HeightReduction rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "HeightReduction" .
+:Hypertension rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "Hypertension" .
+:Imbalance rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "Imbalance" .
+:Insomnia rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "Insomnia" .
+:Irritability rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "Irritability" .
+:Itching rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "Itching" .
+:Jaundice rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "Jaundice" .
+:JointPain rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "JointPain" .
+:JointSwelling rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "JointSwelling" .
+:LeftArmPain rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "LeftArmPain" .
+:LegPain rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "LegPain" .
+:LightSensitivity rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "LightSensitivity" .
+:LimitedMovement rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "LimitedMovement" .
+:LossOfAppetite rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "LossOfAppetite" .
+:LossOfConsciousness rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "LossOfConsciousness" .
+:LossOfTaste rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "LossOfTaste" .
+:MemoryLoss rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "MemoryLoss" .
+:MoodChanges rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "MoodChanges" .
+:Mucus rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "Mucus" .
+:MuscleAches rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "MuscleAches" .
+:MuscleCramps rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "MuscleCramps" .
+:MusclePain rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "MusclePain" .
+:Nausea rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "Nausea" .
+:NightCough rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "NightCough" .
+:NightSweats rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "NightSweats" .
+:Numbness rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "Numbness" .
+:PaleSkin rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "PaleSkin" .
+:Palpitations rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "Palpitations" .
+:Paralysis rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "Paralysis" .
+:PostureLoss rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "PostureLoss" .
+:ProlongedBleeding rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "ProlongedBleeding" .
+:RedEyes rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "RedEyes" .
+:Redness rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "Redness" .
+:Rigidity rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "Rigidity" .
+:Seizures rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "Seizures" .
+:Sensitivity rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "Sensitivity" .
+:SeverePain rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "SeverePain" .
+:ShortnessOfBreath rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "ShortnessOfBreath" .
+:SkinRash rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "SkinRash" .
+:SlowHealing rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "SlowHealing" .
+:Snoring rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "Snoring" .
+:SoreThroat rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "SoreThroat" .
+:SpasticityPain rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "SpasticityPain" .
+:SpeechDifficulty rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "SpeechDifficulty" .
+:Staring rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "Staring" .
+:StiffNeck rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "StiffNeck" .
+:SuddenHeadache rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "SuddenHeadache" .
+:SwollenAnkles rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "SwollenAnkles" .
+:SwollenGlands rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "SwollenGlands" .
+:SwollenLymphNodes rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "SwollenLymphNodes" .
+:Tenderness rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "Tenderness" .
+:Tingling rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "Tingling" .
+:Tremor rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "Tremor" .
+:VisionLoss rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "VisionLoss" .
+:VisionProblems rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "VisionProblems" .
+:VisualAura rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "VisualAura" .
+:Vomiting rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "Vomiting" .
+:Wandering rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "Wandering" .
+:WateryDiarrhea rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "WateryDiarrhea" .
+:WeakPulse rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "WeakPulse" .
+:WeaknessInLimbs rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "WeaknessInLimbs" .
+:WeightGain rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "WeightGain" .
+:WeightLoss rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "WeightLoss" .
+:Wheezing rdf:type owl:NamedIndividual , :Symptom ; rdfs:label "Wheezing" .
+
+############################  Treatments
+
+:ACEInhibitors rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "ACEInhibitors" .
+:Acyclovir rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Acyclovir" .
+:Allopurinol rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Allopurinol" .
+:Angioplasty rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Angioplasty" .
+:Antiarrhythmics rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Antiarrhythmics" .
+:Antibiotics rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Antibiotics" .
+:Anticoagulants rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Anticoagulants" .
+:Antifibrinolytics rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Antifibrinolytics" .
+:AntihistamineCream rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "AntihistamineCream" .
+:AntiviralTherapy rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "AntiviralTherapy" .
+:Antivirals rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Antivirals" .
+:Artemisinin rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Artemisinin" .
+:Aspirin rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Aspirin" .
+:BariatricSurgery rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "BariatricSurgery" .
+:BetaBlockers rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "BetaBlockers" .
+:Biologics rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Biologics" .
+:Bisphosphonates rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Bisphosphonates" .
+:BloodTransfusion rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "BloodTransfusion" .
+:BoneMarrowTransplant rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "BoneMarrowTransplant" .
+:Bronchodilators rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Bronchodilators" .
+:CPAP rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "CPAP" .
+:CalciumSupplements rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "CalciumSupplements" .
+:Cardioversion rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Cardioversion" .
+:Ceftriaxone rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Ceftriaxone" .
+:Chemotherapy rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Chemotherapy" .
+:Chloroquine rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Chloroquine" .
+:Cholecystectomy rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Cholecystectomy" .
+:Ciprofloxacin rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Ciprofloxacin" .
+:CognitiveCare rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "CognitiveCare" .
+:Colchicine rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Colchicine" .
+:Corticosteroids rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Corticosteroids" .
+:Desmopressin rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Desmopressin" .
+:Dialysis rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Dialysis" .
+:DietControl rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "DietControl" .
+:Diuretics rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Diuretics" .
+:Donepezil rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Donepezil" .
+:Dopamine rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Dopamine" .
+:Doxycycline rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Doxycycline" .
+:Ethambutol rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Ethambutol" .
+:Exercise rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Exercise" .
+:FactorReplacement rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "FactorReplacement" .
+:Fluids rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Fluids" .
+:GlutenFreeDiet rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "GlutenFreeDiet" .
+:Hydroxychloroquine rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Hydroxychloroquine" .
+:IVFluids rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "IVFluids" .
+:Ibuprofen rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Ibuprofen" .
+:Immunosuppressants rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Immunosuppressants" .
+:InhaledCorticosteroids rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "InhaledCorticosteroids" .
+:Insulin rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Insulin" .
+:Interferon rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Interferon" .
+:IodineSupplements rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "IodineSupplements" .
+:IronSupplements rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "IronSupplements" .
+:IsoniazidRifampin rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "IsoniazidRifampin" .
+:Lamotrigine rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Lamotrigine" .
+:LeukotrieneModifiers rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "LeukotrieneModifiers" .
+:Levetiracetam rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Levetiracetam" .
+:Levodopa rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Levodopa" .
+:Levothyroxine rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Levothyroxine" .
+:LifestyleChanges rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "LifestyleChanges" .
+:Lithotripsy rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Lithotripsy" .
+:Memantine rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Memantine" .
+:Metformin rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Metformin" .
+:Methimazole rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Methimazole" .
+:Methotrexate rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Methotrexate" .
+:NSAIDs rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "NSAIDs" .
+:Natalizumab rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Natalizumab" .
+:Nintedanib rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Nintedanib" .
+:OralRehydration rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "OralRehydration" .
+:Oseltamivir rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Oseltamivir" .
+:Oxygen rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Oxygen" .
+:Pacemaker rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Pacemaker" .
+:PainRelief rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "PainRelief" .
+:Penicillin rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Penicillin" .
+:PhysicalTherapy rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "PhysicalTherapy" .
+:Pirfenidone rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Pirfenidone" .
+:PositionalTherapy rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "PositionalTherapy" .
+:Praziquantel rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Praziquantel" .
+:Primaquine rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Primaquine" .
+:Pyrazinamide rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Pyrazinamide" .
+:RabiesImmunoglobulin rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "RabiesImmunoglobulin" .
+:RadioactiveIodine rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "RadioactiveIodine" .
+:Rehabilitation rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Rehabilitation" .
+:Rest rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Rest" .
+:Statins rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Statins" .
+:SupportiveCare rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "SupportiveCare" .
+:Surgery rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Surgery" .
+:TargetedTherapy rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "TargetedTherapy" .
+:Thrombolytics rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Thrombolytics" .
+:TopicalSteroids rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "TopicalSteroids" .
+:Triptans rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Triptans" .
+:Ursodeoxycholic rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Ursodeoxycholic" .
+:Vaccination rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Vaccination" .
+:Valproate rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "Valproate" .
+:VitaminA rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "VitaminA" .
+:VitaminB12 rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "VitaminB12" .
+:VitaminD rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "VitaminD" .
+:VitaminSupplements rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "VitaminSupplements" .
+:WeightLoss rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "WeightLoss" .
+:WoundCare rdf:type owl:NamedIndividual , :Treatment ; rdfs:label "WoundCare" .
+
+############################  Diseases
+
+:Influenza rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "Influenza" ;
+    :hasDOID "DOID:8469" ;
+    :hasCategory "Infectious" ;
+    :hasDescription "A viral infectious disease located in the respiratory tract" ;
+    :hasSymptom :Fever , :Cough , :Headache , :SoreThroat , :Fatigue , :Chills ;
+    :hasTreatment :Oseltamivir , :Rest , :Fluids .
+
+:COVID19 rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "COVID19" ;
+    :hasDOID "DOID:0080600" ;
+    :hasCategory "Infectious" ;
+    :hasDescription "A coronavirus infectious disease characterized by respiratory symptoms" ;
+    :hasSymptom :Fever , :Cough , :ShortnessOfBreath , :Fatigue , :LossOfTaste , :Headache ;
+    :hasTreatment :SupportiveCare , :Antivirals , :Vaccination .
+
+:Tuberculosis rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "Tuberculosis" ;
+    :hasDOID "DOID:399" ;
+    :hasCategory "Infectious" ;
+    :hasDescription "A bacterial infectious disease caused by Mycobacterium tuberculosis" ;
+    :hasSymptom :Cough , :Fever , :NightSweats , :WeightLoss , :Fatigue , :ChestPain ;
+    :hasTreatment :IsoniazidRifampin , :Pyrazinamide , :Ethambutol .
+
+:Pneumonia rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "Pneumonia" ;
+    :hasDOID "DOID:552" ;
+    :hasCategory "Infectious" ;
+    :hasDescription "Inflammation of the lungs caused by bacterial or viral infection" ;
+    :hasSymptom :Fever , :Cough , :ShortnessOfBreath , :ChestPain , :Fatigue , :Chills ;
+    :hasTreatment :Antibiotics , :Oxygen , :SupportiveCare .
+
+:Dengue rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "Dengue" ;
+    :hasDOID "DOID:12205" ;
+    :hasCategory "Infectious" ;
+    :hasDescription "A mosquito-borne viral disease causing severe flu-like illness" ;
+    :hasSymptom :Fever , :Headache , :SkinRash , :JointPain , :Fatigue , :Nausea ;
+    :hasTreatment :SupportiveCare , :Fluids , :PainRelief .
+
+:Malaria rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "Malaria" ;
+    :hasDOID "DOID:12365" ;
+    :hasCategory "Infectious" ;
+    :hasDescription "A parasitic disease transmitted by Anopheles mosquitoes" ;
+    :hasSymptom :Fever , :Chills , :Headache , :Fatigue , :NightSweats , :Vomiting ;
+    :hasTreatment :Artemisinin , :Chloroquine , :Primaquine .
+
+:Cholera rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "Cholera" ;
+    :hasDOID "DOID:1498" ;
+    :hasCategory "Infectious" ;
+    :hasDescription "A bacterial intestinal infection causing severe dehydration" ;
+    :hasSymptom :WateryDiarrhea , :Vomiting , :Dehydration , :MuscleCramps , :WeightLoss , :Fatigue ;
+    :hasTreatment :OralRehydration , :Antibiotics , :IVFluids .
+
+:Chickenpox rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "Chickenpox" ;
+    :hasDOID "DOID:8659" ;
+    :hasCategory "Infectious" ;
+    :hasDescription "A viral disease caused by varicella-zoster virus with itchy blisters" ;
+    :hasSymptom :SkinRash , :Fever , :Fatigue , :Itching , :Headache , :LossOfAppetite ;
+    :hasTreatment :Acyclovir , :AntihistamineCream , :Rest .
+
+:Typhoid rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "Typhoid" ;
+    :hasDOID "DOID:13258" ;
+    :hasCategory "Infectious" ;
+    :hasDescription "A bacterial disease caused by Salmonella typhi transmitted via food" ;
+    :hasSymptom :Fever , :Headache , :AbdominalPain , :Fatigue , :SkinRash , :Constipation ;
+    :hasTreatment :Ciprofloxacin , :Ceftriaxone , :Fluids .
+
+:Hepatitis rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "Hepatitis" ;
+    :hasDOID "DOID:2237" ;
+    :hasCategory "Infectious" ;
+    :hasDescription "Inflammatory liver disease caused by viral infection" ;
+    :hasSymptom :Jaundice , :Fatigue , :AbdominalPain , :Nausea , :LossOfAppetite , :DarkUrine ;
+    :hasTreatment :AntiviralTherapy , :Rest , :Fluids .
+
+:Measles rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "Measles" ;
+    :hasDOID "DOID:8622" ;
+    :hasCategory "Infectious" ;
+    :hasDescription "A highly contagious viral disease causing rash and fever" ;
+    :hasSymptom :Fever , :SkinRash , :Cough , :Conjunctivitis , :Headache , :Fatigue ;
+    :hasTreatment :SupportiveCare , :VitaminA , :Rest .
+
+:Mumps rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "Mumps" ;
+    :hasDOID "DOID:10264" ;
+    :hasCategory "Infectious" ;
+    :hasDescription "A viral infection causing swelling of salivary glands" ;
+    :hasSymptom :SwollenGlands , :Fever , :Headache , :Fatigue , :MuscleAches , :LossOfAppetite ;
+    :hasTreatment :SupportiveCare , :PainRelief , :Rest .
+
+:Rabies rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "Rabies" ;
+    :hasDOID "DOID:11260" ;
+    :hasCategory "Infectious" ;
+    :hasDescription "A fatal viral disease transmitted through animal bites affecting the nervous system" ;
+    :hasSymptom :Fever , :Headache , :Anxiety , :Confusion , :Paralysis , :Seizures ;
+    :hasTreatment :RabiesImmunoglobulin , :Vaccination , :WoundCare .
+
+:Leptospirosis rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "Leptospirosis" ;
+    :hasDOID "DOID:2297" ;
+    :hasCategory "Infectious" ;
+    :hasDescription "A bacterial disease spread through animal urine causing organ damage" ;
+    :hasSymptom :Fever , :Headache , :MusclePain , :Jaundice , :RedEyes , :Chills ;
+    :hasTreatment :Doxycycline , :Penicillin , :SupportiveCare .
+
+:Schistosomiasis rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "Schistosomiasis" ;
+    :hasDOID "DOID:1395" ;
+    :hasCategory "Infectious" ;
+    :hasDescription "A parasitic disease caused by flatworms affecting internal organs" ;
+    :hasSymptom :AbdominalPain , :Fatigue , :Fever , :SkinRash , :Diarrhea , :BloodInUrine ;
+    :hasTreatment :Praziquantel , :SupportiveCare , :Fluids .
+
+:Asthma rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "Asthma" ;
+    :hasDOID "DOID:2841" ;
+    :hasCategory "Respiratory" ;
+    :hasDescription "A bronchial disease with chronic airway inflammation and narrowing" ;
+    :hasSymptom :Cough , :ShortnessOfBreath , :Wheezing , :ChestTightness , :Fatigue , :NightCough ;
+    :hasTreatment :Bronchodilators , :InhaledCorticosteroids , :LeukotrieneModifiers .
+
+:Bronchitis rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "Bronchitis" ;
+    :hasDOID "DOID:6132" ;
+    :hasCategory "Respiratory" ;
+    :hasDescription "Inflammation of the bronchial tubes causing persistent cough" ;
+    :hasSymptom :Cough , :Fatigue , :ShortnessOfBreath , :ChestTightness , :SoreThroat , :Mucus ;
+    :hasTreatment :Bronchodilators , :Rest , :Fluids .
+
+:COPD rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "COPD" ;
+    :hasDOID "DOID:3083" ;
+    :hasCategory "Respiratory" ;
+    :hasDescription "Chronic obstructive pulmonary disease with progressive airflow limitation" ;
+    :hasSymptom :ShortnessOfBreath , :Cough , :Wheezing , :ChestTightness , :Fatigue , :Mucus ;
+    :hasTreatment :Bronchodilators , :InhaledCorticosteroids , :Oxygen .
+
+:PulmonaryFibrosis rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "PulmonaryFibrosis" ;
+    :hasDOID "DOID:3770" ;
+    :hasCategory "Respiratory" ;
+    :hasDescription "Progressive scarring of lung tissue causing breathing difficulty" ;
+    :hasSymptom :ShortnessOfBreath , :DryCough , :Fatigue , :WeightLoss , :MuscleAches , :Clubbing ;
+    :hasTreatment :Nintedanib , :Pirfenidone , :Oxygen .
+
+:SleepApnea rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "SleepApnea" ;
+    :hasDOID "DOID:0050847" ;
+    :hasCategory "Respiratory" ;
+    :hasDescription "A sleep disorder with repeated cessation of breathing during sleep" ;
+    :hasSymptom :Snoring , :Fatigue , :Headache , :Insomnia , :Irritability , :Dizziness ;
+    :hasTreatment :CPAP , :WeightLoss , :PositionalTherapy .
+
+:Diabetes rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "Diabetes" ;
+    :hasDOID "DOID:9351" ;
+    :hasCategory "Metabolic" ;
+    :hasDescription "A metabolic disease characterized by high blood sugar levels" ;
+    :hasSymptom :ExcessiveThirst , :FrequentUrination , :Fatigue , :BlurredVision , :WeightLoss , :SlowHealing ;
+    :hasTreatment :Insulin , :Metformin , :DietControl .
+
+:Hypothyroidism rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "Hypothyroidism" ;
+    :hasDOID "DOID:1459" ;
+    :hasCategory "Metabolic" ;
+    :hasDescription "Underactive thyroid gland causing slow metabolism" ;
+    :hasSymptom :Fatigue , :WeightGain , :Constipation , :DrySkin , :Sensitivity , :MuscleCramps ;
+    :hasTreatment :Levothyroxine , :DietControl , :IodineSupplements .
+
+:Hyperthyroidism rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "Hyperthyroidism" ;
+    :hasDOID "DOID:119" ;
+    :hasCategory "Metabolic" ;
+    :hasDescription "Overactive thyroid causing accelerated metabolism" ;
+    :hasSymptom :WeightLoss , :Palpitations , :Anxiety , :Tremor , :ExcessiveSweating , :Fatigue ;
+    :hasTreatment :Methimazole , :BetaBlockers , :RadioactiveIodine .
+
+:Gout rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "Gout" ;
+    :hasDOID "DOID:13188" ;
+    :hasCategory "Metabolic" ;
+    :hasDescription "A form of arthritis caused by uric acid crystal deposits in joints" ;
+    :hasSymptom :JointPain , :JointSwelling , :Redness , :Fever , :Tenderness , :LimitedMovement ;
+    :hasTreatment :Allopurinol , :Colchicine , :NSAIDs .
+
+:Obesity rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "Obesity" ;
+    :hasDOID "DOID:9970" ;
+    :hasCategory "Metabolic" ;
+    :hasDescription "Excess body fat accumulation causing health complications" ;
+    :hasSymptom :ExcessiveWeightGain , :Fatigue , :ShortnessOfBreath , :JointPain , :Snoring , :BackPain ;
+    :hasTreatment :DietControl , :Exercise , :BariatricSurgery .
+
+:Hypertension rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "Hypertension" ;
+    :hasDOID "DOID:10763" ;
+    :hasCategory "Cardiovascular" ;
+    :hasDescription "Persistently elevated arterial blood pressure damaging organs" ;
+    :hasSymptom :Headache , :Dizziness , :ChestPain , :ShortnessOfBreath , :BlurredVision , :Nausea ;
+    :hasTreatment :ACEInhibitors , :BetaBlockers , :LifestyleChanges .
+
+:HeartFailure rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "HeartFailure" ;
+    :hasDOID "DOID:6000" ;
+    :hasCategory "Cardiovascular" ;
+    :hasDescription "Inability of the heart to pump sufficient blood to the body" ;
+    :hasSymptom :ShortnessOfBreath , :Fatigue , :SwollenAnkles , :Dizziness , :ChestPain , :Palpitations ;
+    :hasTreatment :ACEInhibitors , :Diuretics , :BetaBlockers .
+
+:CoronaryArteryDisease rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "CoronaryArteryDisease" ;
+    :hasDOID "DOID:3393" ;
+    :hasCategory "Cardiovascular" ;
+    :hasDescription "Narrowing of coronary arteries reducing blood flow to the heart" ;
+    :hasSymptom :ChestPain , :ShortnessOfBreath , :Fatigue , :Palpitations , :Dizziness , :LeftArmPain ;
+    :hasTreatment :Statins , :Aspirin , :Angioplasty .
+
+:Stroke rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "Stroke" ;
+    :hasDOID "DOID:6713" ;
+    :hasCategory "Cardiovascular" ;
+    :hasDescription "Interrupted blood supply to the brain causing neurological damage" ;
+    :hasSymptom :SuddenHeadache , :FacialDropping , :ArmWeakness , :SpeechDifficulty , :VisionLoss , :Confusion ;
+    :hasTreatment :Thrombolytics , :Anticoagulants , :Rehabilitation .
+
+:Arrhythmia rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "Arrhythmia" ;
+    :hasDOID "DOID:0060224" ;
+    :hasCategory "Cardiovascular" ;
+    :hasDescription "Irregular heartbeat pattern affecting cardiac output" ;
+    :hasSymptom :Palpitations , :Dizziness , :ShortnessOfBreath , :ChestPain , :Fatigue , :Fainting ;
+    :hasTreatment :Antiarrhythmics , :Cardioversion , :Pacemaker .
+
+:Migraine rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "Migraine" ;
+    :hasDOID "DOID:6364" ;
+    :hasCategory "Neurological" ;
+    :hasDescription "A neurological disease with recurrent severe headaches and sensory disturbances" ;
+    :hasSymptom :Headache , :Nausea , :Vomiting , :LightSensitivity , :Dizziness , :VisualAura ;
+    :hasTreatment :Triptans , :Ibuprofen , :Rest .
+
+:Alzheimer rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "Alzheimer" ;
+    :hasDOID "DOID:10652" ;
+    :hasCategory "Neurological" ;
+    :hasDescription "Progressive neurodegenerative disease causing memory loss and cognitive decline" ;
+    :hasSymptom :MemoryLoss , :Confusion , :Disorientation , :MoodChanges , :SpeechDifficulty , :Wandering ;
+    :hasTreatment :Donepezil , :Memantine , :CognitiveCare .
+
+:Epilepsy rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "Epilepsy" ;
+    :hasDOID "DOID:1826" ;
+    :hasCategory "Neurological" ;
+    :hasDescription "Neurological disorder with recurrent unprovoked seizures" ;
+    :hasSymptom :Seizures , :LossOfConsciousness , :Confusion , :Fatigue , :Anxiety , :Staring ;
+    :hasTreatment :Valproate , :Lamotrigine , :Levetiracetam .
+
+:Parkinson rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "Parkinson" ;
+    :hasDOID "DOID:14330" ;
+    :hasCategory "Neurological" ;
+    :hasDescription "Progressive neurodegeneration causing motor control deterioration" ;
+    :hasSymptom :Tremor , :Rigidity , :BradyKinesia , :Imbalance , :SpeechDifficulty , :Constipation ;
+    :hasTreatment :Levodopa , :Dopamine , :PhysicalTherapy .
+
+:MultipleSclerosis rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "MultipleSclerosis" ;
+    :hasDOID "DOID:2377" ;
+    :hasCategory "Neurological" ;
+    :hasDescription "Autoimmune disease damaging the myelin sheath of nerve fibers" ;
+    :hasSymptom :Fatigue , :VisionProblems , :Numbness , :WeaknessInLimbs , :Dizziness , :SpasticityPain ;
+    :hasTreatment :Interferon , :Natalizumab , :PhysicalTherapy .
+
+:Meningitis rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "Meningitis" ;
+    :hasDOID "DOID:9471" ;
+    :hasCategory "Neurological" ;
+    :hasDescription "Inflammation of the membranes surrounding the brain and spinal cord" ;
+    :hasSymptom :Headache , :StiffNeck , :Fever , :Nausea , :LightSensitivity , :Confusion ;
+    :hasTreatment :Antibiotics , :Corticosteroids , :SupportiveCare .
+
+:Anemia rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "Anemia" ;
+    :hasDOID "DOID:2355" ;
+    :hasCategory "Hematological" ;
+    :hasDescription "Deficiency of red blood cells or hemoglobin causing reduced oxygen delivery" ;
+    :hasSymptom :Fatigue , :Dizziness , :ShortnessOfBreath , :PaleSkin , :WeakPulse , :Palpitations ;
+    :hasTreatment :IronSupplements , :VitaminB12 , :BloodTransfusion .
+
+:Leukemia rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "Leukemia" ;
+    :hasDOID "DOID:1240" ;
+    :hasCategory "Hematological" ;
+    :hasDescription "Cancer of blood-forming tissues impairing blood cell production" ;
+    :hasSymptom :Fatigue , :PaleSkin , :FrequentInfections , :EasyBruising , :WeightLoss , :BonePain ;
+    :hasTreatment :Chemotherapy , :BoneMarrowTransplant , :TargetedTherapy .
+
+:Hemophilia rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "Hemophilia" ;
+    :hasDOID "DOID:2355" ;
+    :hasCategory "Hematological" ;
+    :hasDescription "Genetic disorder impairing blood clotting ability" ;
+    :hasSymptom :EasyBruising , :ProlongedBleeding , :JointPain , :JointSwelling , :Fatigue , :BloodInUrine ;
+    :hasTreatment :FactorReplacement , :Desmopressin , :Antifibrinolytics .
+
+:RheumatoidArthritis rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "RheumatoidArthritis" ;
+    :hasDOID "DOID:7148" ;
+    :hasCategory "Autoimmune" ;
+    :hasDescription "Chronic inflammatory autoimmune disease attacking joints" ;
+    :hasSymptom :JointPain , :JointSwelling , :Fatigue , :Fever , :BodyStiffness , :Redness ;
+    :hasTreatment :Methotrexate , :NSAIDs , :Corticosteroids .
+
+:Lupus rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "Lupus" ;
+    :hasDOID "DOID:9074" ;
+    :hasCategory "Autoimmune" ;
+    :hasDescription "Systemic autoimmune disease damaging multiple organs and tissues" ;
+    :hasSymptom :SkinRash , :JointPain , :Fatigue , :Fever , :ChestPain , :HairLoss ;
+    :hasTreatment :Hydroxychloroquine , :Corticosteroids , :Immunosuppressants .
+
+:Psoriasis rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "Psoriasis" ;
+    :hasDOID "DOID:8893" ;
+    :hasCategory "Autoimmune" ;
+    :hasDescription "Chronic autoimmune disease causing rapid skin cell buildup" ;
+    :hasSymptom :SkinRash , :Itching , :DrySkin , :JointPain , :Fatigue , :Redness ;
+    :hasTreatment :Methotrexate , :Biologics , :TopicalSteroids .
+
+:CeliacDisease rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "CeliacDisease" ;
+    :hasDOID "DOID:10608" ;
+    :hasCategory "Autoimmune" ;
+    :hasDescription "Immune reaction to gluten causing intestinal damage" ;
+    :hasSymptom :AbdominalPain , :Diarrhea , :Bloating , :WeightLoss , :Fatigue , :Anemia ;
+    :hasTreatment :GlutenFreeDiet , :VitaminSupplements , :IronSupplements .
+
+:Sarcoidosis rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "Sarcoidosis" ;
+    :hasDOID "DOID:13406" ;
+    :hasCategory "Autoimmune" ;
+    :hasDescription "Inflammatory disease with granuloma formation in multiple organs" ;
+    :hasSymptom :Fatigue , :ShortnessOfBreath , :SkinRash , :Cough , :JointPain , :SwollenLymphNodes ;
+    :hasTreatment :Corticosteroids , :Methotrexate , :Hydroxychloroquine .
+
+:Appendicitis rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "Appendicitis" ;
+    :hasDOID "DOID:8337" ;
+    :hasCategory "Surgical" ;
+    :hasDescription "Acute inflammation of the appendix requiring urgent surgical intervention" ;
+    :hasSymptom :AbdominalPain , :Nausea , :Vomiting , :Fever , :LossOfAppetite , :Rigidity ;
+    :hasTreatment :Surgery , :Antibiotics , :PainRelief .
+
+:GallstoneDisease rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "GallstoneDisease" ;
+    :hasDOID "DOID:9562" ;
+    :hasCategory "Surgical" ;
+    :hasDescription "Formation of gallstones causing biliary pain and obstruction" ;
+    :hasSymptom :AbdominalPain , :Nausea , :Vomiting , :Jaundice , :Fever , :BackPain ;
+    :hasTreatment :Cholecystectomy , :Ursodeoxycholic , :PainRelief .
+
+:KidneyStones rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "KidneyStones" ;
+    :hasDOID "DOID:1546" ;
+    :hasCategory "Surgical" ;
+    :hasDescription "Solid mineral deposits in the kidneys causing severe pain" ;
+    :hasSymptom :SeverePain , :BloodInUrine , :Nausea , :Vomiting , :FrequentUrination , :BackPain ;
+    :hasTreatment :Lithotripsy , :Surgery , :Fluids .
+
+:HerniatedDisc rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "HerniatedDisc" ;
+    :hasDOID "DOID:1595" ;
+    :hasCategory "Surgical" ;
+    :hasDescription "Rupture of intervertebral disc causing nerve compression" ;
+    :hasSymptom :BackPain , :LegPain , :Numbness , :WeaknessInLimbs , :Tingling , :LimitedMovement ;
+    :hasTreatment :PhysicalTherapy , :Corticosteroids , :Surgery .
+
+:KidneyDisease rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "KidneyDisease" ;
+    :hasDOID "DOID:557" ;
+    :hasCategory "Renal" ;
+    :hasDescription "Progressive loss of kidney function causing systemic complications" ;
+    :hasSymptom :FrequentUrination , :Fatigue , :SwollenAnkles , :BackPain , :Nausea , :Hypertension ;
+    :hasTreatment :Dialysis , :ACEInhibitors , :DietControl .
+
+:Osteoporosis rdf:type owl:NamedIndividual , :Disease ;
+    rdfs:label "Osteoporosis" ;
+    :hasDOID "DOID:11476" ;
+    :hasCategory "Musculoskeletal" ;
+    :hasDescription "Metabolic bone disease with decreased bone density and fracture risk" ;
+    :hasSymptom :BonePain , :BackPain , :Fractures , :PostureLoss , :HeightReduction , :Fatigue ;
+    :hasTreatment :Bisphosphonates , :CalciumSupplements , :VitaminD .
+
+############################  Diagnostic Tests
+:SputumTest rdf:type owl:NamedIndividual , :DiagnosticTest ; rdfs:label "Sputum Test" .
+:ChestXRay rdf:type owl:NamedIndividual , :DiagnosticTest ; rdfs:label "Chest X-Ray" .
+:BloodTest rdf:type owl:NamedIndividual , :DiagnosticTest ; rdfs:label "Blood Test" .
+:PCRTest rdf:type owl:NamedIndividual , :DiagnosticTest ; rdfs:label "PCR Test" .
+:SpirometryTest rdf:type owl:NamedIndividual , :DiagnosticTest ; rdfs:label "Spirometry Test" .
+:GlucoseTest rdf:type owl:NamedIndividual , :DiagnosticTest ; rdfs:label "Glucose Test" .
+:BloodPressureTest rdf:type owl:NamedIndividual , :DiagnosticTest ; rdfs:label "Blood Pressure Test" .
+:MalariaRapidTest rdf:type owl:NamedIndividual , :DiagnosticTest ; rdfs:label "Malaria Rapid Test" .
+:LiverFunctionTest rdf:type owl:NamedIndividual , :DiagnosticTest ; rdfs:label "Liver Function Test" .
+:MRIScan rdf:type owl:NamedIndividual , :DiagnosticTest ; rdfs:label "MRI Scan" .
+:EEGTest rdf:type owl:NamedIndividual , :DiagnosticTest ; rdfs:label "EEG Test" .
+:ECGTest rdf:type owl:NamedIndividual , :DiagnosticTest ; rdfs:label "ECG Test" .
+:UrineTest rdf:type owl:NamedIndividual , :DiagnosticTest ; rdfs:label "Urine Test" .
+:StoolCulture rdf:type owl:NamedIndividual , :DiagnosticTest ; rdfs:label "Stool Culture" .
+:BoneDensityTest rdf:type owl:NamedIndividual , :DiagnosticTest ; rdfs:label "Bone Density Test" .
+:RheumFactorTest rdf:type owl:NamedIndividual , :DiagnosticTest ; rdfs:label "Rheumatoid Factor Test" .
+:ANATest rdf:type owl:NamedIndividual , :DiagnosticTest ; rdfs:label "ANA Test" .
+:ThyroidTest rdf:type owl:NamedIndividual , :DiagnosticTest ; rdfs:label "Thyroid Function Test" .
+:UricAcidTest rdf:type owl:NamedIndividual , :DiagnosticTest ; rdfs:label "Uric Acid Test" .
+:KidneyFunctionTest rdf:type owl:NamedIndividual , :DiagnosticTest ; rdfs:label "Kidney Function Test" .
+:LumbarMRI rdf:type owl:NamedIndividual , :DiagnosticTest ; rdfs:label "Lumbar MRI" .
+:UltrasoundAbdomen rdf:type owl:NamedIndividual , :DiagnosticTest ; rdfs:label "Abdominal Ultrasound" .
+:SkinBiopsy rdf:type owl:NamedIndividual , :DiagnosticTest ; rdfs:label "Skin Biopsy" .
+:BoneMarrowBiopsy rdf:type owl:NamedIndividual , :DiagnosticTest ; rdfs:label "Bone Marrow Biopsy" .
+:CoronaryAngiography rdf:type owl:NamedIndividual , :DiagnosticTest ; rdfs:label "Coronary Angiography" .
+
+############################  Clinical Alerts
+:TBAlert rdf:type owl:NamedIndividual , :ClinicalAlert ; rdfs:label "TB Alert" ; :hasAlertMessage "Possible tuberculosis risk. Initiate TB protocol immediately." .
+:CovidAlert rdf:type owl:NamedIndividual , :ClinicalAlert ; rdfs:label "COVID-19 Alert" ; :hasAlertMessage "Possible COVID-19 infection. Isolate and PCR test required." .
+:PneumoniaAlert rdf:type owl:NamedIndividual , :ClinicalAlert ; rdfs:label "Pneumonia Alert" ; :hasAlertMessage "Respiratory distress detected. Chest X-Ray required urgently." .
+:DiabetesAlert rdf:type owl:NamedIndividual , :ClinicalAlert ; rdfs:label "Diabetes Alert" ; :hasAlertMessage "Metabolic symptoms detected. Glucose monitoring required." .
+:NeurologicalAlert rdf:type owl:NamedIndividual , :ClinicalAlert ; rdfs:label "Neurological Alert" ; :hasAlertMessage "Neurological symptoms detected. MRI and neurology consult required." .
+:CardiacAlert rdf:type owl:NamedIndividual , :ClinicalAlert ; rdfs:label "Cardiac Alert" ; :hasAlertMessage "Cardiac symptoms detected. ECG and cardiology consult required." .
+:AutoimmuneAlert rdf:type owl:NamedIndividual , :ClinicalAlert ; rdfs:label "Autoimmune Alert" ; :hasAlertMessage "Autoimmune markers suspected. Rheumatology referral recommended." .
+:RenalAlert rdf:type owl:NamedIndividual , :ClinicalAlert ; rdfs:label "Renal Alert" ; :hasAlertMessage "Renal function decline suspected. Nephrology consult required." .
+:RespiratoryAlert rdf:type owl:NamedIndividual , :ClinicalAlert ; rdfs:label "Respiratory Alert" ; :hasAlertMessage "Chronic respiratory condition detected. Pulmonology consult needed." .
+:InfectiousAlert rdf:type owl:NamedIndividual , :ClinicalAlert ; rdfs:label "Infectious Disease Alert" ; :hasAlertMessage "Infectious disease suspected. Isolation and lab work required." .
+:SurgicalAlert rdf:type owl:NamedIndividual , :ClinicalAlert ; rdfs:label "Surgical Alert" ; :hasAlertMessage "Acute surgical condition suspected. Immediate surgery consult needed." .
+:HematologicalAlert rdf:type owl:NamedIndividual , :ClinicalAlert ; rdfs:label "Hematological Alert" ; :hasAlertMessage "Blood disorder suspected. Hematology and bone marrow workup required." .
+
+############################  Diagnostic Recommendations
+:TBScreeningRecommendation rdf:type owl:NamedIndividual , :DiagnosticRecommendation ; rdfs:label "TB Screening Recommendation" .
+:CovidTestingRecommendation rdf:type owl:NamedIndividual , :DiagnosticRecommendation ; rdfs:label "COVID-19 Testing Recommendation" .
+:RespiratoryEvalRecommendation rdf:type owl:NamedIndividual , :DiagnosticRecommendation ; rdfs:label "Respiratory Evaluation Recommendation" .
+:MetabolicScreeningRecommendation rdf:type owl:NamedIndividual , :DiagnosticRecommendation ; rdfs:label "Metabolic Screening Recommendation" .
+:NeurologicalEvalRecommendation rdf:type owl:NamedIndividual , :DiagnosticRecommendation ; rdfs:label "Neurological Evaluation Recommendation" .
+:CardiacEvalRecommendation rdf:type owl:NamedIndividual , :DiagnosticRecommendation ; rdfs:label "Cardiac Evaluation Recommendation" .
+:AutoimmuneScreeningRecommendation rdf:type owl:NamedIndividual , :DiagnosticRecommendation ; rdfs:label "Autoimmune Screening Recommendation" .
+:RenalEvalRecommendation rdf:type owl:NamedIndividual , :DiagnosticRecommendation ; rdfs:label "Renal Evaluation Recommendation" .
+:InfectiousDiseaseRecommendation rdf:type owl:NamedIndividual , :DiagnosticRecommendation ; rdfs:label "Infectious Disease Recommendation" .
+:SurgicalConsultRecommendation rdf:type owl:NamedIndividual , :DiagnosticRecommendation ; rdfs:label "Surgical Consult Recommendation" .
+:HematologyRecommendation rdf:type owl:NamedIndividual , :DiagnosticRecommendation ; rdfs:label "Hematology Recommendation" .
+:ThyroidEvalRecommendation rdf:type owl:NamedIndividual , :DiagnosticRecommendation ; rdfs:label "Thyroid Evaluation Recommendation" .
+
+############################  Patients (20)
+
+:Ali rdf:type owl:NamedIndividual , :Patient ; rdfs:label "Ali" ;
+    :reportsSymptom :Fever , :Cough , :NightSweats , :WeightLoss , :Fatigue ;
+    :hasSymptomDuration 14 ; :hasFeverStatus "Yes" ; :hasRiskLevel "Medium" ; :hasAge 35 ; :hasGender "Male" ;
+    :requiresTest :SputumTest ; :triggersAlert :TBAlert ; :hasRecommendation :TBScreeningRecommendation .
+
+:Ayse rdf:type owl:NamedIndividual , :Patient ; rdfs:label "Ayse" ;
+    :reportsSymptom :Fever , :Cough , :ShortnessOfBreath , :LossOfTaste , :Headache ;
+    :hasSymptomDuration 7 ; :hasFeverStatus "Yes" ; :hasRiskLevel "High" ; :hasAge 28 ; :hasGender "Female" ;
+    :requiresTest :PCRTest ; :triggersAlert :CovidAlert ; :hasRecommendation :CovidTestingRecommendation .
+
+:Mehmet rdf:type owl:NamedIndividual , :Patient ; rdfs:label "Mehmet" ;
+    :reportsSymptom :Cough , :ShortnessOfBreath , :Wheezing , :ChestTightness , :Fatigue ;
+    :hasSymptomDuration 30 ; :hasFeverStatus "No" ; :hasRiskLevel "Low" ; :hasAge 45 ; :hasGender "Male" ;
+    :requiresTest :SpirometryTest ; :triggersAlert :RespiratoryAlert ; :hasRecommendation :RespiratoryEvalRecommendation .
+
+:Zeynep rdf:type owl:NamedIndividual , :Patient ; rdfs:label "Zeynep" ;
+    :reportsSymptom :ExcessiveThirst , :FrequentUrination , :Fatigue , :BlurredVision , :WeightLoss ;
+    :hasSymptomDuration 21 ; :hasFeverStatus "No" ; :hasRiskLevel "High" ; :hasAge 52 ; :hasGender "Female" ;
+    :requiresTest :GlucoseTest ; :triggersAlert :DiabetesAlert ; :hasRecommendation :MetabolicScreeningRecommendation .
+
+:Burak rdf:type owl:NamedIndividual , :Patient ; rdfs:label "Burak" ;
+    :reportsSymptom :Fever , :Cough , :ChestPain , :ShortnessOfBreath , :Chills ;
+    :hasSymptomDuration 5 ; :hasFeverStatus "Yes" ; :hasRiskLevel "High" ; :hasAge 61 ; :hasGender "Male" ;
+    :requiresTest :ChestXRay ; :triggersAlert :PneumoniaAlert ; :hasRecommendation :RespiratoryEvalRecommendation .
+
+:Elif rdf:type owl:NamedIndividual , :Patient ; rdfs:label "Elif" ;
+    :reportsSymptom :Headache , :Nausea , :LightSensitivity , :Dizziness , :VisualAura ;
+    :hasSymptomDuration 3 ; :hasFeverStatus "No" ; :hasRiskLevel "Low" ; :hasAge 32 ; :hasGender "Female" ;
+    :requiresTest :MRIScan ; :triggersAlert :NeurologicalAlert ; :hasRecommendation :NeurologicalEvalRecommendation .
+
+:Hasan rdf:type owl:NamedIndividual , :Patient ; rdfs:label "Hasan" ;
+    :reportsSymptom :ShortnessOfBreath , :Fatigue , :SwollenAnkles , :Dizziness , :ChestPain , :Palpitations ;
+    :hasSymptomDuration 10 ; :hasFeverStatus "No" ; :hasRiskLevel "High" ; :hasAge 67 ; :hasGender "Male" ;
+    :requiresTest :ECGTest ; :triggersAlert :CardiacAlert ; :hasRecommendation :CardiacEvalRecommendation .
+
+:Selin rdf:type owl:NamedIndividual , :Patient ; rdfs:label "Selin" ;
+    :reportsSymptom :JointPain , :JointSwelling , :Fatigue , :Fever , :SkinRash , :BodyStiffness ;
+    :hasSymptomDuration 45 ; :hasFeverStatus "Yes" ; :hasRiskLevel "Medium" ; :hasAge 38 ; :hasGender "Female" ;
+    :requiresTest :RheumFactorTest ; :triggersAlert :AutoimmuneAlert ; :hasRecommendation :AutoimmuneScreeningRecommendation .
+
+:Murat rdf:type owl:NamedIndividual , :Patient ; rdfs:label "Murat" ;
+    :reportsSymptom :FrequentUrination , :Fatigue , :SwollenAnkles , :BackPain , :Nausea , :Hypertension ;
+    :hasSymptomDuration 60 ; :hasFeverStatus "No" ; :hasRiskLevel "High" ; :hasAge 58 ; :hasGender "Male" ;
+    :requiresTest :KidneyFunctionTest ; :triggersAlert :RenalAlert ; :hasRecommendation :RenalEvalRecommendation .
+
+:Fatma rdf:type owl:NamedIndividual , :Patient ; rdfs:label "Fatma" ;
+    :reportsSymptom :MemoryLoss , :Confusion , :Disorientation , :MoodChanges , :SpeechDifficulty ;
+    :hasSymptomDuration 180 ; :hasFeverStatus "No" ; :hasRiskLevel "Medium" ; :hasAge 74 ; :hasGender "Female" ;
+    :requiresTest :MRIScan ; :triggersAlert :NeurologicalAlert ; :hasRecommendation :NeurologicalEvalRecommendation .
+
+:Kemal rdf:type owl:NamedIndividual , :Patient ; rdfs:label "Kemal" ;
+    :reportsSymptom :Tremor , :Rigidity , :BradyKinesia , :Imbalance , :SpeechDifficulty ;
+    :hasSymptomDuration 90 ; :hasFeverStatus "No" ; :hasRiskLevel "Medium" ; :hasAge 69 ; :hasGender "Male" ;
+    :requiresTest :MRIScan ; :triggersAlert :NeurologicalAlert ; :hasRecommendation :NeurologicalEvalRecommendation .
+
+:Nilufer rdf:type owl:NamedIndividual , :Patient ; rdfs:label "Nilufer" ;
+    :reportsSymptom :WeightGain , :Fatigue , :Constipation , :DrySkin , :MuscleCramps ;
+    :hasSymptomDuration 60 ; :hasFeverStatus "No" ; :hasRiskLevel "Low" ; :hasAge 44 ; :hasGender "Female" ;
+    :requiresTest :ThyroidTest ; :hasRecommendation :ThyroidEvalRecommendation .
+
+:Tarık rdf:type owl:NamedIndividual , :Patient ; rdfs:label "Tarik" ;
+    :reportsSymptom :JointPain , :JointSwelling , :Redness , :Fever , :Tenderness ;
+    :hasSymptomDuration 8 ; :hasFeverStatus "Yes" ; :hasRiskLevel "Medium" ; :hasAge 50 ; :hasGender "Male" ;
+    :requiresTest :UricAcidTest ; :hasRecommendation :MetabolicScreeningRecommendation .
+
+:Derya rdf:type owl:NamedIndividual , :Patient ; rdfs:label "Derya" ;
+    :reportsSymptom :AbdominalPain , :Nausea , :Vomiting , :Fever , :LossOfAppetite ;
+    :hasSymptomDuration 2 ; :hasFeverStatus "Yes" ; :hasRiskLevel "High" ; :hasAge 27 ; :hasGender "Female" ;
+    :requiresTest :UltrasoundAbdomen ; :triggersAlert :SurgicalAlert ; :hasRecommendation :SurgicalConsultRecommendation .
+
+:Cemil rdf:type owl:NamedIndividual , :Patient ; rdfs:label "Cemil" ;
+    :reportsSymptom :ChestPain , :Palpitations , :Dizziness , :ShortnessOfBreath , :LeftArmPain ;
+    :hasSymptomDuration 4 ; :hasFeverStatus "No" ; :hasRiskLevel "High" ; :hasAge 55 ; :hasGender "Male" ;
+    :requiresTest :CoronaryAngiography ; :triggersAlert :CardiacAlert ; :hasRecommendation :CardiacEvalRecommendation .
+
+:Pinar rdf:type owl:NamedIndividual , :Patient ; rdfs:label "Pinar" ;
+    :reportsSymptom :Fatigue , :PaleSkin , :Dizziness , :ShortnessOfBreath , :Palpitations ;
+    :hasSymptomDuration 25 ; :hasFeverStatus "No" ; :hasRiskLevel "Medium" ; :hasAge 33 ; :hasGender "Female" ;
+    :requiresTest :BloodTest ; :triggersAlert :HematologicalAlert ; :hasRecommendation :HematologyRecommendation .
+
+:Volkan rdf:type owl:NamedIndividual , :Patient ; rdfs:label "Volkan" ;
+    :reportsSymptom :Fever , :Headache , :AbdominalPain , :Fatigue , :SkinRash ;
+    :hasSymptomDuration 9 ; :hasFeverStatus "Yes" ; :hasRiskLevel "Medium" ; :hasAge 41 ; :hasGender "Male" ;
+    :requiresTest :BloodTest ; :triggersAlert :InfectiousAlert ; :hasRecommendation :InfectiousDiseaseRecommendation .
+
+:Aysun rdf:type owl:NamedIndividual , :Patient ; rdfs:label "Aysun" ;
+    :reportsSymptom :SkinRash , :Itching , :DrySkin , :JointPain , :Fatigue , :Redness ;
+    :hasSymptomDuration 50 ; :hasFeverStatus "No" ; :hasRiskLevel "Low" ; :hasAge 36 ; :hasGender "Female" ;
+    :requiresTest :SkinBiopsy ; :triggersAlert :AutoimmuneAlert ; :hasRecommendation :AutoimmuneScreeningRecommendation .
+
+:Orhan rdf:type owl:NamedIndividual , :Patient ; rdfs:label "Orhan" ;
+    :reportsSymptom :SeverePain , :BloodInUrine , :Nausea , :Vomiting , :BackPain ;
+    :hasSymptomDuration 3 ; :hasFeverStatus "No" ; :hasRiskLevel "Medium" ; :hasAge 48 ; :hasGender "Male" ;
+    :requiresTest :UrineTest ; :triggersAlert :SurgicalAlert ; :hasRecommendation :SurgicalConsultRecommendation .
+
+:Gulsah rdf:type owl:NamedIndividual , :Patient ; rdfs:label "Gulsah" ;
+    :reportsSymptom :Fatigue , :FrequentInfections , :EasyBruising , :WeightLoss , :BonePain ;
+    :hasSymptomDuration 35 ; :hasFeverStatus "Yes" ; :hasRiskLevel "High" ; :hasAge 29 ; :hasGender "Female" ;
+    :requiresTest :BoneMarrowBiopsy ; :triggersAlert :HematologicalAlert ; :hasRecommendation :HematologyRecommendation .

@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Healthcare Diagnosis Ontology v4 — WIDOCO Documentation</title>
+<style>
+:root{--navy:#1B3A5C;--mid:#2C6E9E;--teal:#1A7A8A;--light:#F0F7FA;--border:#C8DCE8;--dark:#1A202C;--gray:#64748B;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:Arial,sans-serif;font-size:14px;color:var(--dark);background:#F7FAFB;}
+nav{background:var(--navy);position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.2);}
+.nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;}
+.brand{padding:14px 24px;color:#fff;font-weight:bold;font-size:15px;border-right:1px solid #2C4A6E;}
+nav a{color:#B0C4D8;text-decoration:none;padding:14px 16px;display:block;font-size:13px;transition:all .2s;}
+nav a:hover{color:#fff;background:#2C4A6E;}
+.page-header{background:linear-gradient(135deg,var(--navy) 0%,#2C6E9E 100%);color:#fff;padding:56px 0 44px;}
+.inner{max-width:1200px;margin:0 auto;padding:0 32px;}
+.page-header h1{font-size:36px;margin-bottom:8px;}
+.page-header .sub{font-size:15px;color:#B0C4D8;margin-bottom:20px;}
+.meta-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-top:24px;}
+.meta-item{background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:14px 18px;}
+.meta-item .lbl{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:#90B4CC;margin-bottom:4px;}
+.meta-item .val{font-size:24px;font-weight:bold;}
+.meta-item .desc{font-size:11px;color:#90B4CC;margin-top:2px;}
+.container{max-width:1200px;margin:0 auto;padding:0 32px;}
+.section{padding:48px 0 24px;}
+h2{font-size:23px;color:var(--navy);padding-bottom:10px;border-bottom:3px solid var(--teal);display:inline-block;margin-bottom:18px;}
+h3{font-size:16px;color:var(--mid);margin:24px 0 10px;}
+p{line-height:1.7;color:#374151;margin-bottom:10px;}
+.table-wrap{overflow-x:auto;margin:12px 0 20px;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.08);}
+table{width:100%;border-collapse:collapse;background:#fff;}
+thead tr{background:var(--navy);}
+thead th{color:#fff;padding:11px 16px;text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.05em;}
+tbody tr:nth-child(even){background:var(--light);}
+tbody tr:hover{background:#DFF0F8;}
+td{padding:9px 16px;border-bottom:1px solid var(--border);font-size:13px;vertical-align:top;}
+td a{color:var(--mid);font-weight:bold;text-decoration:none;}
+td a:hover{text-decoration:underline;}
+td code{font-family:'Courier New',monospace;color:var(--teal);font-size:13px;}
+.ns-box{background:#EDF2F7;border:1px solid #CBD5E0;border-radius:8px;padding:16px 20px;font-family:'Courier New',monospace;font-size:13px;color:#2D3748;margin:14px 0;line-height:1.9;}
+.inference-box{background:#EFF5FC;border-left:5px solid var(--mid);border-radius:0 8px 8px 0;padding:18px 20px;margin:14px 0;}
+.formula{font-family:'Courier New',monospace;font-size:14px;color:var(--navy);font-weight:bold;margin:6px 0;}
+.swrl-box{background:#EEF8F1;border-left:5px solid #1E8449;border-radius:0 8px 8px 0;padding:18px 20px;margin:14px 0;}
+.swrl-box .formula{color:#1A5C35;}
+.disease-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;margin:16px 0;}
+.disease-card{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06);transition:box-shadow .2s;}
+.disease-card:hover{box-shadow:0 4px 12px rgba(0,0,0,.12);}
+.disease-header{background:var(--light);padding:11px 14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;border-bottom:1px solid var(--border);}
+.disease-name{font-weight:bold;color:var(--navy);font-size:14px;flex:1;}
+.doid-badge{background:var(--navy);color:#fff;font-size:10px;padding:2px 8px;border-radius:10px;font-family:monospace;}
+.disease-body{padding:11px 14px;}
+.prop-row{margin-bottom:8px;font-size:12px;}
+.prop-row b{color:var(--gray);font-size:10px;text-transform:uppercase;letter-spacing:.04em;display:block;margin-bottom:4px;}
+.tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;margin:2px;}
+.tag.sym{background:#EFF5FC;color:#1B3A5C;border:1px solid #C8DCF0;}
+.tag.trt{background:#EEF8F1;color:#1A5C35;border:1px solid #A8D8B0;}
+.cat-badge{padding:2px 10px;border-radius:10px;font-size:10px;font-weight:bold;}
+.cat-infectious{background:#FDEDEC;color:#922B21;}
+.cat-neurological{background:#EBF5FB;color:#1A5276;}
+.cat-cardiovascular{background:#FDEDEC;color:#7B241C;}
+.cat-metabolic{background:#FEF9E7;color:#7E5109;}
+.cat-autoimmune{background:#F4ECF7;color:#6C3483;}
+.cat-respiratory{background:#E8F8F5;color:#0E6655;}
+.cat-hematological{background:#FEF9E7;color:#935116;}
+.cat-surgical{background:#FDEDEC;color:#922B21;}
+.cat-renal{background:#EBF5FB;color:#154360;}
+.cat-musculoskeletal{background:#F4ECF7;color:#512E5F;}
+.stats-bar{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0;}
+.stat-chip{background:#fff;border:1px solid var(--border);border-radius:8px;padding:10px 18px;text-align:center;min-width:90px;box-shadow:0 1px 3px rgba(0,0,0,.06);}
+.stat-chip .num{font-size:24px;font-weight:bold;color:var(--navy);}
+.stat-chip .lbl2{font-size:11px;color:var(--gray);text-transform:uppercase;letter-spacing:.05em;}
+.filter-bar{margin:12px 0 16px;display:flex;gap:8px;flex-wrap:wrap;}
+.filter-btn{background:var(--light);border:1px solid var(--border);border-radius:20px;padding:5px 14px;font-size:12px;cursor:pointer;transition:all .2s;}
+.filter-btn:hover,.filter-btn.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+footer{background:var(--navy);color:#90B4CC;padding:32px;text-align:center;margin-top:60px;font-size:13px;line-height:1.9;}
+footer a{color:var(--teal);text-decoration:none;}
+</style>
+</head>
+<body>
+<nav><div class="nav-inner">
+  <div class="brand">HDO v4</div>
+  <a href="#overview">Overview</a>
+  <a href="#namespace">Namespace</a>
+  <a href="#classes">Classes</a>
+  <a href="#object-properties">Object Properties</a>
+  <a href="#data-properties">Data Properties</a>
+  <a href="#inference">Inference</a>
+  <a href="#instances">Instances</a>
+  <a href="#usage">Usage</a>
+</div></nav>
+
+<div class="page-header"><div class="inner">
+  <h1>Healthcare Diagnosis Ontology</h1>
+  <div class="sub">Version 4.0 &mdash; OWL 2 Knowledge Graph for Clinical Decision Support</div>
+  <div style="font-size:13px;color:#90B4CC;">Beyza Ucar &middot; Student ID: 220316060 &middot; Manisa Celal Bayar University &middot; 2025&ndash;2026</div>
+  <div class="meta-grid">
+    <div class="meta-item"><div class="lbl">RDF Triples</div><div class="val">1,925</div><div class="desc">Total assertions</div></div>
+    <div class="meta-item"><div class="lbl">Diseases</div><div class="val">50</div><div class="desc">10 categories</div></div>
+    <div class="meta-item"><div class="lbl">Symptoms</div><div class="val">103</div><div class="desc">Named individuals</div></div>
+    <div class="meta-item"><div class="lbl">Treatments</div><div class="val">99</div><div class="desc">Named individuals</div></div>
+    <div class="meta-item"><div class="lbl">Patients</div><div class="val">20</div><div class="desc">ABox instances</div></div>
+    <div class="meta-item"><div class="lbl">OWL Classes</div><div class="val">11</div><div class="desc">TBox definitions</div></div>
+    <div class="meta-item"><div class="lbl">Object Properties</div><div class="val">9</div><div class="desc">Semantic relations</div></div>
+    <div class="meta-item"><div class="lbl">Data Properties</div><div class="val">9</div><div class="desc">Literal attributes</div></div>
+  </div>
+</div></div>
+
+<div class="container">
+
+<div class="section" id="overview">
+<h2>Overview</h2>
+<p>The Healthcare Diagnosis Ontology (HDO) is a formal OWL 2 DL knowledge base for clinical diagnosis support. It encodes semantic relationships between patients, symptoms, diseases, treatments, and diagnostic tests, enabling automated reasoning without explicit diagnostic assertions.</p>
+<p>The ontology supports: (1) automated diagnosis inference via OWL 2 property chain axiom; (2) rule-based clinical decision support via SWRL; (3) semantic querying via 20 SPARQL 1.1 queries; and (4) data quality enforcement via 7 SHACL shapes (Conforms: True &mdash; zero violations across 1,925 triples).</p>
+</div>
+
+<div class="section" id="namespace">
+<h2>Namespace Information</h2>
+<div class="ns-box">
+Ontology URI: http://www.semanticweb.org/beyza/ontologies/2026/healthcare<br>
+Namespace: http://www.semanticweb.org/beyza/ontologies/2026/healthcare#<br>
+Preferred prefix: hdo:<br>
+OWL Profile: OWL 2 DL<br>
+Serialization: RDF Turtle (.ttl)<br>
+Reasoner: HermiT 1.4.3.x (Protege 5.6)
+</div>
+</div>
+
+<div class="section" id="classes">
+<h2>Classes</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Class Name</th><th>Label</th></tr></thead>
+<tbody><tr><td><a href="#ClinicalAlert">ClinicalAlert</a></td><td>Clinical Alert</td></tr>
+<tr><td><a href="#ClinicalRule">ClinicalRule</a></td><td>Clinical Rule</td></tr>
+<tr><td><a href="#Diagnosis">Diagnosis</a></td><td>Diagnosis</td></tr>
+<tr><td><a href="#DiagnosticRecommendation">DiagnosticRecommendation</a></td><td>Diagnostic Recommendation</td></tr>
+<tr><td><a href="#DiagnosticTest">DiagnosticTest</a></td><td>Diagnostic Test</td></tr>
+<tr><td><a href="#Disease">Disease</a></td><td>Disease</td></tr>
+<tr><td><a href="#Patient">Patient</a></td><td>Patient</td></tr>
+<tr><td><a href="#PatientObservation">PatientObservation</a></td><td>Patient Observation</td></tr>
+<tr><td><a href="#RiskAssessment">RiskAssessment</a></td><td>Risk Assessment</td></tr>
+<tr><td><a href="#Symptom">Symptom</a></td><td>Symptom</td></tr>
+<tr><td><a href="#Treatment">Treatment</a></td><td>Treatment</td></tr>
+</tbody>
+</table></div>
+</div>
+
+<div class="section" id="object-properties">
+<h2>Object Properties</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Property</th><th>Label</th><th>Domain</th><th>Range</th></tr></thead>
+<tbody><tr><td><code>basedOnObservation</code></td><td>based on observation</td><td>Patient</td><td>PatientObservation</td></tr>
+<tr><td><code>hasRecommendation</code></td><td>has recommendation</td><td>Patient</td><td>DiagnosticRecommendation</td></tr>
+<tr><td><code>hasRiskAssessment</code></td><td>has risk assessment</td><td>Patient</td><td>RiskAssessment</td></tr>
+<tr><td><code>hasSymptom</code></td><td>has symptom</td><td>Disease</td><td>Symptom</td></tr>
+<tr><td><code>hasTreatment</code></td><td>has treatment</td><td>Disease</td><td>Treatment</td></tr>
+<tr><td><code>possibleDiagnosis</code></td><td>possible diagnosis</td><td>Patient</td><td>Disease</td></tr>
+<tr><td><code>reportsSymptom</code></td><td>reports symptom</td><td>Patient</td><td>Symptom</td></tr>
+<tr><td><code>requiresTest</code></td><td>requires test</td><td>Patient</td><td>DiagnosticTest</td></tr>
+<tr><td><code>triggersAlert</code></td><td>triggers alert</td><td>Patient</td><td>ClinicalAlert</td></tr>
+</tbody>
+</table></div>
+</div>
+
+<div class="section" id="data-properties">
+<h2>Data Properties</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Property</th><th>Label</th><th>Domain</th><th>Range</th></tr></thead>
+<tbody><tr><td><code>hasAge</code></td><td>hasAge</td><td>Patient</td><td>integer</td></tr>
+<tr><td><code>hasAlertMessage</code></td><td>hasAlertMessage</td><td>ClinicalAlert</td><td>string</td></tr>
+<tr><td><code>hasCategory</code></td><td>hasCategory</td><td>Disease</td><td>string</td></tr>
+<tr><td><code>hasDOID</code></td><td>hasDOID</td><td>Disease</td><td>string</td></tr>
+<tr><td><code>hasDescription</code></td><td>hasDescription</td><td>Disease</td><td>string</td></tr>
+<tr><td><code>hasFeverStatus</code></td><td>hasFeverStatus</td><td>Patient</td><td>string</td></tr>
+<tr><td><code>hasGender</code></td><td>hasGender</td><td>Patient</td><td>string</td></tr>
+<tr><td><code>hasRiskLevel</code></td><td>hasRiskLevel</td><td>Patient</td><td>string</td></tr>
+<tr><td><code>hasSymptomDuration</code></td><td>hasSymptomDuration</td><td>Patient</td><td>integer</td></tr>
+</tbody>
+</table></div>
+</div>
+
+<div class="section" id="inference">
+<h2>Inference Mechanisms</h2>
+<h3>OWL 2 Property Chain Axiom</h3>
+<div class="inference-box">
+<div class="formula">reportsSymptom &compfn; inverse(hasSymptom) &sqsube; possibleDiagnosis</div>
+<p style="margin-top:10px;font-size:13px;color:#374151;">If a patient <b>reports symptom S</b> and a disease <b>has symptom S</b>, HermiT automatically infers that disease as a <b>possible diagnosis</b>. Example: Ali reports Cough, Fever, NightSweats &rarr; <code>hdo:Ali hdo:possibleDiagnosis hdo:Tuberculosis</code> (inferred, not asserted).</p>
+</div>
+<h3>SWRL Clinical Rule</h3>
+<div class="swrl-box">
+<div class="formula">Patient(?p) &and; hasSymptomDuration(?p, ?d) &and; swrlb:greaterThan(?d, 13)</div>
+<div class="formula">&and; hasFeverStatus(?p, "Yes")</div>
+<div class="formula">&rarr; requiresTest(?p, SputumTest)</div>
+<p style="margin-top:10px;font-size:13px;color:#374151;">Fires for: <b>Ali</b> (14 days, fever Yes) and <b>Selin</b> (45 days, fever Yes).</p>
+</div>
+</div>
+
+<div class="section" id="instances">
+<h2>Named Individuals &mdash; Disease Registry</h2>
+<div class="stats-bar">
+<div class="stat-chip"><div class="num">50</div><div class="lbl2">Diseases</div></div>
+<div class="stat-chip"><div class="num">103</div><div class="lbl2">Symptoms</div></div>
+<div class="stat-chip"><div class="num">99</div><div class="lbl2">Treatments</div></div>
+<div class="stat-chip"><div class="num">20</div><div class="lbl2">Patients</div></div>
+</div>
+<div class="filter-bar">
+<button class="filter-btn active" onclick="filterDiseases('all',this)">All (50)</button>
+<button class="filter-btn" onclick="filterDiseases('infectious',this)">Infectious (15)</button>
+<button class="filter-btn" onclick="filterDiseases('neurological',this)">Neurological (6)</button>
+<button class="filter-btn" onclick="filterDiseases('cardiovascular',this)">Cardiovascular (5)</button>
+<button class="filter-btn" onclick="filterDiseases('autoimmune',this)">Autoimmune (5)</button>
+<button class="filter-btn" onclick="filterDiseases('metabolic',this)">Metabolic (5)</button>
+<button class="filter-btn" onclick="filterDiseases('respiratory',this)">Respiratory (5)</button>
+<button class="filter-btn" onclick="filterDiseases('hematological',this)">Hematological (3)</button>
+<button class="filter-btn" onclick="filterDiseases('surgical',this)">Surgical (4)</button>
+</div>
+<div class="disease-grid" id="disease-grid"><div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">Alzheimer</span>
+    <span class="doid-badge">DOID:10652</span>
+    <span class="cat-badge cat-neurological">Neurological</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">Confusion</span><span class="tag sym">Disorientation</span><span class="tag sym">MemoryLoss</span><span class="tag sym">MoodChanges</span><span class="tag sym">SpeechDifficulty</span><span class="tag sym">Wandering</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">CognitiveCare</span><span class="tag trt">Donepezil</span><span class="tag trt">Memantine</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">Anemia</span>
+    <span class="doid-badge">DOID:2355</span>
+    <span class="cat-badge cat-hematological">Hematological</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">Dizziness</span><span class="tag sym">Fatigue</span><span class="tag sym">PaleSkin</span><span class="tag sym">Palpitations</span><span class="tag sym">ShortnessOfBreath</span><span class="tag sym">WeakPulse</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">BloodTransfusion</span><span class="tag trt">IronSupplements</span><span class="tag trt">VitaminB12</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">Appendicitis</span>
+    <span class="doid-badge">DOID:8337</span>
+    <span class="cat-badge cat-surgical">Surgical</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">AbdominalPain</span><span class="tag sym">Fever</span><span class="tag sym">LossOfAppetite</span><span class="tag sym">Nausea</span><span class="tag sym">Rigidity</span><span class="tag sym">Vomiting</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">Antibiotics</span><span class="tag trt">PainRelief</span><span class="tag trt">Surgery</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">Arrhythmia</span>
+    <span class="doid-badge">DOID:0060224</span>
+    <span class="cat-badge cat-cardiovascular">Cardiovascular</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">ChestPain</span><span class="tag sym">Dizziness</span><span class="tag sym">Fainting</span><span class="tag sym">Fatigue</span><span class="tag sym">Palpitations</span><span class="tag sym">ShortnessOfBreath</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">Antiarrhythmics</span><span class="tag trt">Cardioversion</span><span class="tag trt">Pacemaker</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">Asthma</span>
+    <span class="doid-badge">DOID:2841</span>
+    <span class="cat-badge cat-respiratory">Respiratory</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">ChestTightness</span><span class="tag sym">Cough</span><span class="tag sym">Fatigue</span><span class="tag sym">NightCough</span><span class="tag sym">ShortnessOfBreath</span><span class="tag sym">Wheezing</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">Bronchodilators</span><span class="tag trt">InhaledCorticosteroids</span><span class="tag trt">LeukotrieneModifiers</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">Bronchitis</span>
+    <span class="doid-badge">DOID:6132</span>
+    <span class="cat-badge cat-respiratory">Respiratory</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">ChestTightness</span><span class="tag sym">Cough</span><span class="tag sym">Fatigue</span><span class="tag sym">Mucus</span><span class="tag sym">ShortnessOfBreath</span><span class="tag sym">SoreThroat</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">Bronchodilators</span><span class="tag trt">Fluids</span><span class="tag trt">Rest</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">COPD</span>
+    <span class="doid-badge">DOID:3083</span>
+    <span class="cat-badge cat-respiratory">Respiratory</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">ChestTightness</span><span class="tag sym">Cough</span><span class="tag sym">Fatigue</span><span class="tag sym">Mucus</span><span class="tag sym">ShortnessOfBreath</span><span class="tag sym">Wheezing</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">Bronchodilators</span><span class="tag trt">InhaledCorticosteroids</span><span class="tag trt">Oxygen</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">COVID19</span>
+    <span class="doid-badge">DOID:0080600</span>
+    <span class="cat-badge cat-infectious">Infectious</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">Cough</span><span class="tag sym">Fatigue</span><span class="tag sym">Fever</span><span class="tag sym">Headache</span><span class="tag sym">LossOfTaste</span><span class="tag sym">ShortnessOfBreath</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">Antivirals</span><span class="tag trt">SupportiveCare</span><span class="tag trt">Vaccination</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">CeliacDisease</span>
+    <span class="doid-badge">DOID:10608</span>
+    <span class="cat-badge cat-autoimmune">Autoimmune</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">AbdominalPain</span><span class="tag sym">Anemia</span><span class="tag sym">Bloating</span><span class="tag sym">Diarrhea</span><span class="tag sym">Fatigue</span><span class="tag sym">WeightLoss</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">GlutenFreeDiet</span><span class="tag trt">IronSupplements</span><span class="tag trt">VitaminSupplements</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">Chickenpox</span>
+    <span class="doid-badge">DOID:8659</span>
+    <span class="cat-badge cat-infectious">Infectious</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">Fatigue</span><span class="tag sym">Fever</span><span class="tag sym">Headache</span><span class="tag sym">Itching</span><span class="tag sym">LossOfAppetite</span><span class="tag sym">SkinRash</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">Acyclovir</span><span class="tag trt">AntihistamineCream</span><span class="tag trt">Rest</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">Cholera</span>
+    <span class="doid-badge">DOID:1498</span>
+    <span class="cat-badge cat-infectious">Infectious</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">Dehydration</span><span class="tag sym">Fatigue</span><span class="tag sym">MuscleCramps</span><span class="tag sym">Vomiting</span><span class="tag sym">WateryDiarrhea</span><span class="tag sym">WeightLoss</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">Antibiotics</span><span class="tag trt">IVFluids</span><span class="tag trt">OralRehydration</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">CoronaryArteryDisease</span>
+    <span class="doid-badge">DOID:3393</span>
+    <span class="cat-badge cat-cardiovascular">Cardiovascular</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">ChestPain</span><span class="tag sym">Dizziness</span><span class="tag sym">Fatigue</span><span class="tag sym">LeftArmPain</span><span class="tag sym">Palpitations</span><span class="tag sym">ShortnessOfBreath</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">Angioplasty</span><span class="tag trt">Aspirin</span><span class="tag trt">Statins</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">Dengue</span>
+    <span class="doid-badge">DOID:12205</span>
+    <span class="cat-badge cat-infectious">Infectious</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">Fatigue</span><span class="tag sym">Fever</span><span class="tag sym">Headache</span><span class="tag sym">JointPain</span><span class="tag sym">Nausea</span><span class="tag sym">SkinRash</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">Fluids</span><span class="tag trt">PainRelief</span><span class="tag trt">SupportiveCare</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">Diabetes</span>
+    <span class="doid-badge">DOID:9351</span>
+    <span class="cat-badge cat-metabolic">Metabolic</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">BlurredVision</span><span class="tag sym">ExcessiveThirst</span><span class="tag sym">Fatigue</span><span class="tag sym">FrequentUrination</span><span class="tag sym">SlowHealing</span><span class="tag sym">WeightLoss</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">DietControl</span><span class="tag trt">Insulin</span><span class="tag trt">Metformin</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">Epilepsy</span>
+    <span class="doid-badge">DOID:1826</span>
+    <span class="cat-badge cat-neurological">Neurological</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">Anxiety</span><span class="tag sym">Confusion</span><span class="tag sym">Fatigue</span><span class="tag sym">LossOfConsciousness</span><span class="tag sym">Seizures</span><span class="tag sym">Staring</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">Lamotrigine</span><span class="tag trt">Levetiracetam</span><span class="tag trt">Valproate</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">GallstoneDisease</span>
+    <span class="doid-badge">DOID:9562</span>
+    <span class="cat-badge cat-surgical">Surgical</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">AbdominalPain</span><span class="tag sym">BackPain</span><span class="tag sym">Fever</span><span class="tag sym">Jaundice</span><span class="tag sym">Nausea</span><span class="tag sym">Vomiting</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">Cholecystectomy</span><span class="tag trt">PainRelief</span><span class="tag trt">Ursodeoxycholic</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">Gout</span>
+    <span class="doid-badge">DOID:13188</span>
+    <span class="cat-badge cat-metabolic">Metabolic</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">Fever</span><span class="tag sym">JointPain</span><span class="tag sym">JointSwelling</span><span class="tag sym">LimitedMovement</span><span class="tag sym">Redness</span><span class="tag sym">Tenderness</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">Allopurinol</span><span class="tag trt">Colchicine</span><span class="tag trt">NSAIDs</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">HeartFailure</span>
+    <span class="doid-badge">DOID:6000</span>
+    <span class="cat-badge cat-cardiovascular">Cardiovascular</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">ChestPain</span><span class="tag sym">Dizziness</span><span class="tag sym">Fatigue</span><span class="tag sym">Palpitations</span><span class="tag sym">ShortnessOfBreath</span><span class="tag sym">SwollenAnkles</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">ACEInhibitors</span><span class="tag trt">BetaBlockers</span><span class="tag trt">Diuretics</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">Hemophilia</span>
+    <span class="doid-badge">DOID:2355</span>
+    <span class="cat-badge cat-hematological">Hematological</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">BloodInUrine</span><span class="tag sym">EasyBruising</span><span class="tag sym">Fatigue</span><span class="tag sym">JointPain</span><span class="tag sym">JointSwelling</span><span class="tag sym">ProlongedBleeding</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">Antifibrinolytics</span><span class="tag trt">Desmopressin</span><span class="tag trt">FactorReplacement</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">Hepatitis</span>
+    <span class="doid-badge">DOID:2237</span>
+    <span class="cat-badge cat-infectious">Infectious</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">AbdominalPain</span><span class="tag sym">DarkUrine</span><span class="tag sym">Fatigue</span><span class="tag sym">Jaundice</span><span class="tag sym">LossOfAppetite</span><span class="tag sym">Nausea</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">AntiviralTherapy</span><span class="tag trt">Fluids</span><span class="tag trt">Rest</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">HerniatedDisc</span>
+    <span class="doid-badge">DOID:1595</span>
+    <span class="cat-badge cat-surgical">Surgical</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">BackPain</span><span class="tag sym">LegPain</span><span class="tag sym">LimitedMovement</span><span class="tag sym">Numbness</span><span class="tag sym">Tingling</span><span class="tag sym">WeaknessInLimbs</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">Corticosteroids</span><span class="tag trt">PhysicalTherapy</span><span class="tag trt">Surgery</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">Hypertension</span>
+    <span class="doid-badge">DOID:10763</span>
+    <span class="cat-badge cat-cardiovascular">Cardiovascular</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">BlurredVision</span><span class="tag sym">ChestPain</span><span class="tag sym">Dizziness</span><span class="tag sym">Headache</span><span class="tag sym">Nausea</span><span class="tag sym">ShortnessOfBreath</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">ACEInhibitors</span><span class="tag trt">BetaBlockers</span><span class="tag trt">LifestyleChanges</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">Hyperthyroidism</span>
+    <span class="doid-badge">DOID:119</span>
+    <span class="cat-badge cat-metabolic">Metabolic</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">Anxiety</span><span class="tag sym">ExcessiveSweating</span><span class="tag sym">Fatigue</span><span class="tag sym">Palpitations</span><span class="tag sym">Tremor</span><span class="tag sym">WeightLoss</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">BetaBlockers</span><span class="tag trt">Methimazole</span><span class="tag trt">RadioactiveIodine</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">Hypothyroidism</span>
+    <span class="doid-badge">DOID:1459</span>
+    <span class="cat-badge cat-metabolic">Metabolic</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">Constipation</span><span class="tag sym">DrySkin</span><span class="tag sym">Fatigue</span><span class="tag sym">MuscleCramps</span><span class="tag sym">Sensitivity</span><span class="tag sym">WeightGain</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">DietControl</span><span class="tag trt">IodineSupplements</span><span class="tag trt">Levothyroxine</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">Influenza</span>
+    <span class="doid-badge">DOID:8469</span>
+    <span class="cat-badge cat-infectious">Infectious</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">Chills</span><span class="tag sym">Cough</span><span class="tag sym">Fatigue</span><span class="tag sym">Fever</span><span class="tag sym">Headache</span><span class="tag sym">SoreThroat</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">Fluids</span><span class="tag trt">Oseltamivir</span><span class="tag trt">Rest</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">KidneyDisease</span>
+    <span class="doid-badge">DOID:557</span>
+    <span class="cat-badge cat-renal">Renal</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">BackPain</span><span class="tag sym">Fatigue</span><span class="tag sym">FrequentUrination</span><span class="tag sym">Hypertension</span><span class="tag sym">Nausea</span><span class="tag sym">SwollenAnkles</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">ACEInhibitors</span><span class="tag trt">Dialysis</span><span class="tag trt">DietControl</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">KidneyStones</span>
+    <span class="doid-badge">DOID:1546</span>
+    <span class="cat-badge cat-surgical">Surgical</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">BackPain</span><span class="tag sym">BloodInUrine</span><span class="tag sym">FrequentUrination</span><span class="tag sym">Nausea</span><span class="tag sym">SeverePain</span><span class="tag sym">Vomiting</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">Fluids</span><span class="tag trt">Lithotripsy</span><span class="tag trt">Surgery</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">Leptospirosis</span>
+    <span class="doid-badge">DOID:2297</span>
+    <span class="cat-badge cat-infectious">Infectious</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">Chills</span><span class="tag sym">Fever</span><span class="tag sym">Headache</span><span class="tag sym">Jaundice</span><span class="tag sym">MusclePain</span><span class="tag sym">RedEyes</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">Doxycycline</span><span class="tag trt">Penicillin</span><span class="tag trt">SupportiveCare</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">Leukemia</span>
+    <span class="doid-badge">DOID:1240</span>
+    <span class="cat-badge cat-hematological">Hematological</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">BonePain</span><span class="tag sym">EasyBruising</span><span class="tag sym">Fatigue</span><span class="tag sym">FrequentInfections</span><span class="tag sym">PaleSkin</span><span class="tag sym">WeightLoss</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">BoneMarrowTransplant</span><span class="tag trt">Chemotherapy</span><span class="tag trt">TargetedTherapy</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">Lupus</span>
+    <span class="doid-badge">DOID:9074</span>
+    <span class="cat-badge cat-autoimmune">Autoimmune</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">ChestPain</span><span class="tag sym">Fatigue</span><span class="tag sym">Fever</span><span class="tag sym">HairLoss</span><span class="tag sym">JointPain</span><span class="tag sym">SkinRash</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">Corticosteroids</span><span class="tag trt">Hydroxychloroquine</span><span class="tag trt">Immunosuppressants</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">Malaria</span>
+    <span class="doid-badge">DOID:12365</span>
+    <span class="cat-badge cat-infectious">Infectious</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">Chills</span><span class="tag sym">Fatigue</span><span class="tag sym">Fever</span><span class="tag sym">Headache</span><span class="tag sym">NightSweats</span><span class="tag sym">Vomiting</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">Artemisinin</span><span class="tag trt">Chloroquine</span><span class="tag trt">Primaquine</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">Measles</span>
+    <span class="doid-badge">DOID:8622</span>
+    <span class="cat-badge cat-infectious">Infectious</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">Conjunctivitis</span><span class="tag sym">Cough</span><span class="tag sym">Fatigue</span><span class="tag sym">Fever</span><span class="tag sym">Headache</span><span class="tag sym">SkinRash</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">Rest</span><span class="tag trt">SupportiveCare</span><span class="tag trt">VitaminA</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">Meningitis</span>
+    <span class="doid-badge">DOID:9471</span>
+    <span class="cat-badge cat-neurological">Neurological</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">Confusion</span><span class="tag sym">Fever</span><span class="tag sym">Headache</span><span class="tag sym">LightSensitivity</span><span class="tag sym">Nausea</span><span class="tag sym">StiffNeck</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">Antibiotics</span><span class="tag trt">Corticosteroids</span><span class="tag trt">SupportiveCare</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">Migraine</span>
+    <span class="doid-badge">DOID:6364</span>
+    <span class="cat-badge cat-neurological">Neurological</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">Dizziness</span><span class="tag sym">Headache</span><span class="tag sym">LightSensitivity</span><span class="tag sym">Nausea</span><span class="tag sym">VisualAura</span><span class="tag sym">Vomiting</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">Ibuprofen</span><span class="tag trt">Rest</span><span class="tag trt">Triptans</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">MultipleSclerosis</span>
+    <span class="doid-badge">DOID:2377</span>
+    <span class="cat-badge cat-neurological">Neurological</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">Dizziness</span><span class="tag sym">Fatigue</span><span class="tag sym">Numbness</span><span class="tag sym">SpasticityPain</span><span class="tag sym">VisionProblems</span><span class="tag sym">WeaknessInLimbs</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">Interferon</span><span class="tag trt">Natalizumab</span><span class="tag trt">PhysicalTherapy</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">Mumps</span>
+    <span class="doid-badge">DOID:10264</span>
+    <span class="cat-badge cat-infectious">Infectious</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">Fatigue</span><span class="tag sym">Fever</span><span class="tag sym">Headache</span><span class="tag sym">LossOfAppetite</span><span class="tag sym">MuscleAches</span><span class="tag sym">SwollenGlands</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">PainRelief</span><span class="tag trt">Rest</span><span class="tag trt">SupportiveCare</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">Obesity</span>
+    <span class="doid-badge">DOID:9970</span>
+    <span class="cat-badge cat-metabolic">Metabolic</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">BackPain</span><span class="tag sym">ExcessiveWeightGain</span><span class="tag sym">Fatigue</span><span class="tag sym">JointPain</span><span class="tag sym">ShortnessOfBreath</span><span class="tag sym">Snoring</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">BariatricSurgery</span><span class="tag trt">DietControl</span><span class="tag trt">Exercise</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">Osteoporosis</span>
+    <span class="doid-badge">DOID:11476</span>
+    <span class="cat-badge cat-musculoskeletal">Musculoskeletal</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">BackPain</span><span class="tag sym">BonePain</span><span class="tag sym">Fatigue</span><span class="tag sym">Fractures</span><span class="tag sym">HeightReduction</span><span class="tag sym">PostureLoss</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">Bisphosphonates</span><span class="tag trt">CalciumSupplements</span><span class="tag trt">VitaminD</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">Parkinson</span>
+    <span class="doid-badge">DOID:14330</span>
+    <span class="cat-badge cat-neurological">Neurological</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">BradyKinesia</span><span class="tag sym">Constipation</span><span class="tag sym">Imbalance</span><span class="tag sym">Rigidity</span><span class="tag sym">SpeechDifficulty</span><span class="tag sym">Tremor</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">Dopamine</span><span class="tag trt">Levodopa</span><span class="tag trt">PhysicalTherapy</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">Pneumonia</span>
+    <span class="doid-badge">DOID:552</span>
+    <span class="cat-badge cat-infectious">Infectious</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">ChestPain</span><span class="tag sym">Chills</span><span class="tag sym">Cough</span><span class="tag sym">Fatigue</span><span class="tag sym">Fever</span><span class="tag sym">ShortnessOfBreath</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">Antibiotics</span><span class="tag trt">Oxygen</span><span class="tag trt">SupportiveCare</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">Psoriasis</span>
+    <span class="doid-badge">DOID:8893</span>
+    <span class="cat-badge cat-autoimmune">Autoimmune</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">DrySkin</span><span class="tag sym">Fatigue</span><span class="tag sym">Itching</span><span class="tag sym">JointPain</span><span class="tag sym">Redness</span><span class="tag sym">SkinRash</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">Biologics</span><span class="tag trt">Methotrexate</span><span class="tag trt">TopicalSteroids</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">PulmonaryFibrosis</span>
+    <span class="doid-badge">DOID:3770</span>
+    <span class="cat-badge cat-respiratory">Respiratory</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">Clubbing</span><span class="tag sym">DryCough</span><span class="tag sym">Fatigue</span><span class="tag sym">MuscleAches</span><span class="tag sym">ShortnessOfBreath</span><span class="tag sym">WeightLoss</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">Nintedanib</span><span class="tag trt">Oxygen</span><span class="tag trt">Pirfenidone</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">Rabies</span>
+    <span class="doid-badge">DOID:11260</span>
+    <span class="cat-badge cat-infectious">Infectious</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">Anxiety</span><span class="tag sym">Confusion</span><span class="tag sym">Fever</span><span class="tag sym">Headache</span><span class="tag sym">Paralysis</span><span class="tag sym">Seizures</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">RabiesImmunoglobulin</span><span class="tag trt">Vaccination</span><span class="tag trt">WoundCare</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">RheumatoidArthritis</span>
+    <span class="doid-badge">DOID:7148</span>
+    <span class="cat-badge cat-autoimmune">Autoimmune</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">BodyStiffness</span><span class="tag sym">Fatigue</span><span class="tag sym">Fever</span><span class="tag sym">JointPain</span><span class="tag sym">JointSwelling</span><span class="tag sym">Redness</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">Corticosteroids</span><span class="tag trt">Methotrexate</span><span class="tag trt">NSAIDs</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">Sarcoidosis</span>
+    <span class="doid-badge">DOID:13406</span>
+    <span class="cat-badge cat-autoimmune">Autoimmune</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">Cough</span><span class="tag sym">Fatigue</span><span class="tag sym">JointPain</span><span class="tag sym">ShortnessOfBreath</span><span class="tag sym">SkinRash</span><span class="tag sym">SwollenLymphNodes</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">Corticosteroids</span><span class="tag trt">Hydroxychloroquine</span><span class="tag trt">Methotrexate</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">Schistosomiasis</span>
+    <span class="doid-badge">DOID:1395</span>
+    <span class="cat-badge cat-infectious">Infectious</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">AbdominalPain</span><span class="tag sym">BloodInUrine</span><span class="tag sym">Diarrhea</span><span class="tag sym">Fatigue</span><span class="tag sym">Fever</span><span class="tag sym">SkinRash</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">Fluids</span><span class="tag trt">Praziquantel</span><span class="tag trt">SupportiveCare</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">SleepApnea</span>
+    <span class="doid-badge">DOID:0050847</span>
+    <span class="cat-badge cat-respiratory">Respiratory</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">Dizziness</span><span class="tag sym">Fatigue</span><span class="tag sym">Headache</span><span class="tag sym">Insomnia</span><span class="tag sym">Irritability</span><span class="tag sym">Snoring</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">CPAP</span><span class="tag trt">PositionalTherapy</span><span class="tag trt">WeightLoss</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">Stroke</span>
+    <span class="doid-badge">DOID:6713</span>
+    <span class="cat-badge cat-cardiovascular">Cardiovascular</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">ArmWeakness</span><span class="tag sym">Confusion</span><span class="tag sym">FacialDropping</span><span class="tag sym">SpeechDifficulty</span><span class="tag sym">SuddenHeadache</span><span class="tag sym">VisionLoss</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">Anticoagulants</span><span class="tag trt">Rehabilitation</span><span class="tag trt">Thrombolytics</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">Tuberculosis</span>
+    <span class="doid-badge">DOID:399</span>
+    <span class="cat-badge cat-infectious">Infectious</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">ChestPain</span><span class="tag sym">Cough</span><span class="tag sym">Fatigue</span><span class="tag sym">Fever</span><span class="tag sym">NightSweats</span><span class="tag sym">WeightLoss</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">Ethambutol</span><span class="tag trt">IsoniazidRifampin</span><span class="tag trt">Pyrazinamide</span></div>
+  </div>
+</div>
+<div class="disease-card">
+  <div class="disease-header">
+    <span class="disease-name">Typhoid</span>
+    <span class="doid-badge">DOID:13258</span>
+    <span class="cat-badge cat-infectious">Infectious</span>
+  </div>
+  <div class="disease-body">
+    <div class="prop-row"><b>Symptoms</b><span class="tag sym">AbdominalPain</span><span class="tag sym">Constipation</span><span class="tag sym">Fatigue</span><span class="tag sym">Fever</span><span class="tag sym">Headache</span><span class="tag sym">SkinRash</span></div>
+    <div class="prop-row"><b>Treatments</b><span class="tag trt">Ceftriaxone</span><span class="tag trt">Ciprofloxacin</span><span class="tag trt">Fluids</span></div>
+  </div>
+</div>
+</div>
+</div>
+
+<div class="section" id="usage">
+<h2>Usage Examples</h2>
+<h3>Load with RDFLib (Python)</h3>
+<div class="ns-box">from rdflib import Graph, Namespace<br>
+g = Graph()<br>
+g.parse("healthcare-v4.ttl", format="turtle")<br>
+HDO = Namespace("http://www.semanticweb.org/beyza/ontologies/2026/healthcare#")</div>
+<h3>SPARQL Query &mdash; Q10: SWRL Rule Simulation</h3>
+<div class="ns-box">PREFIX hdo: &lt;http://www.semanticweb.org/beyza/ontologies/2026/healthcare#&gt;<br>
+SELECT ?patient ?duration ?feverStatus WHERE {<br>
+&nbsp;&nbsp;?p rdf:type hdo:Patient . ?p rdfs:label ?patient .<br>
+&nbsp;&nbsp;?p hdo:hasSymptomDuration ?duration . ?p hdo:hasFeverStatus ?feverStatus .<br>
+&nbsp;&nbsp;FILTER (?duration &gt; 13 &amp;&amp; ?feverStatus = "Yes")<br>
+}</div>
+<h3>SHACL Validation</h3>
+<div class="ns-box">import pyshacl; from rdflib import Graph<br>
+data_g = Graph().parse("healthcare-v4.ttl", format="turtle")<br>
+shacl_g = Graph().parse("shacl-v4.ttl", format="turtle")<br>
+conforms, _, _ = pyshacl.validate(data_g, shacl_graph=shacl_g, inference="rdfs")<br>
+# Conforms: True</div>
+</div>
+
+</div>
+<footer>
+<div><b>Healthcare Diagnosis Ontology v4</b></div>
+<div>Namespace: <a href="http://www.semanticweb.org/beyza/ontologies/2026/healthcare#">http://www.semanticweb.org/beyza/ontologies/2026/healthcare#</a></div>
+<div>Beyza Ucar &middot; 220316060 &middot; Manisa Celal Bayar University &middot; 2025&ndash;2026</div>
+<div style="margin-top:8px;">
+<a href="https://github.com/beyzaucarr/Healthcare-Diagnosis-Ontology">GitHub Repository</a> &middot;
+<a href="healthcare-v4.ttl">Download Ontology (TTL)</a> &middot;
+<a href="shacl-v4.ttl">SHACL Shapes</a> &middot;
+<a href="sparql-v4.rq">SPARQL Queries</a>
+</div>
+</footer>
+<script>
+function filterDiseases(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  document.querySelectorAll('.disease-card').forEach(function(card){
+    if (cat === 'all') { card.style.display = ''; return; }
+    var badge = card.querySelector('.cat-badge');
+    card.style.display = (badge && badge.classList.contains('cat-' + cat)) ? '' : 'none';
+  });
+}
+</script>
+</body></html>

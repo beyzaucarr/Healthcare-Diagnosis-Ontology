@@ -1,0 +1,71 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix hdo: <http://www.semanticweb.org/beyza/ontologies/2026/healthcare#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+# ============================================================
+# SHACL Shapes — Healthcare Diagnosis Ontology v4
+# 50 diseases | 20 patients | 103 symptoms | 99 treatments
+# ============================================================
+
+hdo:PatientShape a sh:NodeShape ; sh:targetClass hdo:Patient ; sh:name "Patient Shape" ;
+    sh:property [ sh:path hdo:reportsSymptom ; sh:minCount 1 ; sh:class hdo:Symptom ;
+        sh:message "A Patient must report at least one Symptom." ] ;
+    sh:property [ sh:path hdo:hasRiskLevel ; sh:minCount 1 ; sh:maxCount 1 ;
+        sh:datatype xsd:string ; sh:in ("Low" "Medium" "High") ;
+        sh:message "hasRiskLevel must be Low, Medium, or High." ] ;
+    sh:property [ sh:path hdo:hasFeverStatus ; sh:minCount 1 ; sh:maxCount 1 ;
+        sh:datatype xsd:string ; sh:in ("Yes" "No") ;
+        sh:message "hasFeverStatus must be Yes or No." ] ;
+    sh:property [ sh:path hdo:hasSymptomDuration ; sh:minCount 1 ; sh:maxCount 1 ;
+        sh:datatype xsd:integer ; sh:minInclusive 1 ;
+        sh:message "hasSymptomDuration must be a positive integer." ] ;
+    sh:property [ sh:path hdo:hasAge ; sh:minCount 1 ; sh:maxCount 1 ;
+        sh:datatype xsd:integer ; sh:minInclusive 0 ; sh:maxInclusive 130 ;
+        sh:message "hasAge must be between 0 and 130." ] ;
+    sh:property [ sh:path hdo:hasGender ; sh:minCount 1 ; sh:maxCount 1 ;
+        sh:datatype xsd:string ; sh:in ("Male" "Female" "Other") ;
+        sh:message "hasGender must be Male, Female, or Other." ] ;
+    sh:property [ sh:path hdo:requiresTest ; sh:minCount 1 ; sh:class hdo:DiagnosticTest ;
+        sh:message "A Patient must have at least one DiagnosticTest." ] ;
+    sh:property [ sh:path hdo:hasRecommendation ; sh:minCount 1 ; sh:class hdo:DiagnosticRecommendation ;
+        sh:message "A Patient must have at least one DiagnosticRecommendation." ] .
+
+hdo:DiseaseShape a sh:NodeShape ; sh:targetClass hdo:Disease ; sh:name "Disease Shape" ;
+    sh:property [ sh:path hdo:hasSymptom ; sh:minCount 2 ; sh:maxCount 10 ; sh:class hdo:Symptom ;
+        sh:message "A Disease must have 2-10 symptoms." ] ;
+    sh:property [ sh:path hdo:hasTreatment ; sh:minCount 1 ; sh:class hdo:Treatment ;
+        sh:message "A Disease must have at least one Treatment." ] ;
+    sh:property [ sh:path hdo:hasDOID ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ;
+        sh:message "A Disease must have exactly one DOID." ] ;
+    sh:property [ sh:path hdo:hasDescription ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ;
+        sh:message "A Disease must have exactly one description." ] ;
+    sh:property [ sh:path hdo:hasCategory ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ;
+        sh:in ("Infectious" "Respiratory" "Metabolic" "Cardiovascular" "Neurological"
+               "Autoimmune" "Hematological" "Surgical" "Renal" "Musculoskeletal" "General") ;
+        sh:message "hasCategory must be a valid disease category." ] .
+
+hdo:ClinicalAlertShape a sh:NodeShape ; sh:targetClass hdo:ClinicalAlert ; sh:name "Clinical Alert Shape" ;
+    sh:property [ sh:path hdo:hasAlertMessage ; sh:minCount 1 ; sh:maxCount 1 ;
+        sh:datatype xsd:string ; sh:minLength 10 ;
+        sh:message "ClinicalAlert must have an alert message of at least 10 characters." ] ;
+    sh:property [ sh:path rdfs:label ; sh:minCount 1 ;
+        sh:message "ClinicalAlert must have an rdfs:label." ] .
+
+hdo:DiagnosticTestShape a sh:NodeShape ; sh:targetClass hdo:DiagnosticTest ; sh:name "Diagnostic Test Shape" ;
+    sh:property [ sh:path rdfs:label ; sh:minCount 1 ; sh:datatype xsd:string ;
+        sh:message "A DiagnosticTest must have an rdfs:label." ] .
+
+hdo:DiagnosticRecommendationShape a sh:NodeShape ; sh:targetClass hdo:DiagnosticRecommendation ;
+    sh:name "Diagnostic Recommendation Shape" ;
+    sh:property [ sh:path rdfs:label ; sh:minCount 1 ;
+        sh:message "A DiagnosticRecommendation must have an rdfs:label." ] .
+
+hdo:SymptomShape a sh:NodeShape ; sh:targetClass hdo:Symptom ; sh:name "Symptom Shape" ;
+    sh:property [ sh:path rdfs:label ; sh:minCount 1 ;
+        sh:message "A Symptom must have an rdfs:label." ] .
+
+hdo:TreatmentShape a sh:NodeShape ; sh:targetClass hdo:Treatment ; sh:name "Treatment Shape" ;
+    sh:property [ sh:path rdfs:label ; sh:minCount 1 ;
+        sh:message "A Treatment must have an rdfs:label." ] .

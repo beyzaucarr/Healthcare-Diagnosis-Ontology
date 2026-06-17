@@ -1,0 +1,51 @@
+Disease,DOID,Category,Description,Symptoms,Treatment
+Influenza,DOID:8469,Infectious,A viral infectious disease located in the respiratory tract,Fever;Cough;Headache;SoreThroat;Fatigue;Chills,Oseltamivir;Rest;Fluids
+COVID19,DOID:0080600,Infectious,A coronavirus infectious disease characterized by respiratory symptoms,Fever;Cough;ShortnessOfBreath;Fatigue;LossOfTaste;Headache,SupportiveCare;Antivirals;Vaccination
+Tuberculosis,DOID:399,Infectious,A bacterial infectious disease caused by Mycobacterium tuberculosis,Cough;Fever;NightSweats;WeightLoss;Fatigue;ChestPain,IsoniazidRifampin;Pyrazinamide;Ethambutol
+Pneumonia,DOID:552,Infectious,Inflammation of the lungs caused by bacterial or viral infection,Fever;Cough;ShortnessOfBreath;ChestPain;Fatigue;Chills,Antibiotics;Oxygen;SupportiveCare
+Dengue,DOID:12205,Infectious,A mosquito-borne viral disease causing severe flu-like illness,Fever;Headache;SkinRash;JointPain;Fatigue;Nausea,SupportiveCare;Fluids;PainRelief
+Malaria,DOID:12365,Infectious,A parasitic disease transmitted by Anopheles mosquitoes,Fever;Chills;Headache;Fatigue;NightSweats;Vomiting,Artemisinin;Chloroquine;Primaquine
+Cholera,DOID:1498,Infectious,A bacterial intestinal infection causing severe dehydration,WateryDiarrhea;Vomiting;Dehydration;MuscleCramps;WeightLoss;Fatigue,OralRehydration;Antibiotics;IVFluids
+Chickenpox,DOID:8659,Infectious,A viral disease caused by varicella-zoster virus with itchy blisters,SkinRash;Fever;Fatigue;Itching;Headache;LossOfAppetite,Acyclovir;AntihistamineCream;Rest
+Typhoid,DOID:13258,Infectious,A bacterial disease caused by Salmonella typhi transmitted via food,Fever;Headache;AbdominalPain;Fatigue;SkinRash;Constipation,Ciprofloxacin;Ceftriaxone;Fluids
+Hepatitis,DOID:2237,Infectious,Inflammatory liver disease caused by viral infection,Jaundice;Fatigue;AbdominalPain;Nausea;LossOfAppetite;DarkUrine,AntiviralTherapy;Rest;Fluids
+Measles,DOID:8622,Infectious,A highly contagious viral disease causing rash and fever,Fever;SkinRash;Cough;Conjunctivitis;Headache;Fatigue,SupportiveCare;VitaminA;Rest
+Mumps,DOID:10264,Infectious,A viral infection causing swelling of salivary glands,SwollenGlands;Fever;Headache;Fatigue;MuscleAches;LossOfAppetite,SupportiveCare;PainRelief;Rest
+Rabies,DOID:11260,Infectious,A fatal viral disease transmitted through animal bites affecting the nervous system,Fever;Headache;Anxiety;Confusion;Paralysis;Seizures,RabiesImmunoglobulin;Vaccination;WoundCare
+Leptospirosis,DOID:2297,Infectious,A bacterial disease spread through animal urine causing organ damage,Fever;Headache;MusclePain;Jaundice;RedEyes;Chills,Doxycycline;Penicillin;SupportiveCare
+Schistosomiasis,DOID:1395,Infectious,A parasitic disease caused by flatworms affecting internal organs,AbdominalPain;Fatigue;Fever;SkinRash;Diarrhea;BloodInUrine,Praziquantel;SupportiveCare;Fluids
+Asthma,DOID:2841,Respiratory,A bronchial disease with chronic airway inflammation and narrowing,Cough;ShortnessOfBreath;Wheezing;ChestTightness;Fatigue;NightCough,Bronchodilators;InhaledCorticosteroids;LeukotrieneModifiers
+Bronchitis,DOID:6132,Respiratory,Inflammation of the bronchial tubes causing persistent cough,Cough;Fatigue;ShortnessOfBreath;ChestTightness;SoreThroat;Mucus,Bronchodilators;Rest;Fluids
+COPD,DOID:3083,Respiratory,Chronic obstructive pulmonary disease with progressive airflow limitation,ShortnessOfBreath;Cough;Wheezing;ChestTightness;Fatigue;Mucus,Bronchodilators;InhaledCorticosteroids;Oxygen
+PulmonaryFibrosis,DOID:3770,Respiratory,Progressive scarring of lung tissue causing breathing difficulty,ShortnessOfBreath;DryCough;Fatigue;WeightLoss;MuscleAches;Clubbing,Nintedanib;Pirfenidone;Oxygen
+SleepApnea,DOID:0050847,Respiratory,A sleep disorder with repeated cessation of breathing during sleep,Snoring;Fatigue;Headache;Insomnia;Irritability;Dizziness,CPAP;WeightLoss;PositionalTherapy
+Diabetes,DOID:9351,Metabolic,A metabolic disease characterized by high blood sugar levels,ExcessiveThirst;FrequentUrination;Fatigue;BlurredVision;WeightLoss;SlowHealing,Insulin;Metformin;DietControl
+Hypothyroidism,DOID:1459,Metabolic,Underactive thyroid gland causing slow metabolism,Fatigue;WeightGain;Constipation;DrySkin;Sensitivity;MuscleCramps,Levothyroxine;DietControl;IodineSupplements
+Hyperthyroidism,DOID:119,Metabolic,Overactive thyroid causing accelerated metabolism,WeightLoss;Palpitations;Anxiety;Tremor;ExcessiveSweating;Fatigue,Methimazole;BetaBlockers;RadioactiveIodine
+Gout,DOID:13188,Metabolic,A form of arthritis caused by uric acid crystal deposits in joints,JointPain;JointSwelling;Redness;Fever;Tenderness;LimitedMovement,Allopurinol;Colchicine;NSAIDs
+Obesity,DOID:9970,Metabolic,Excess body fat accumulation causing health complications,ExcessiveWeightGain;Fatigue;ShortnessOfBreath;JointPain;Snoring;BackPain,DietControl;Exercise;BariatricSurgery
+Hypertension,DOID:10763,Cardiovascular,Persistently elevated arterial blood pressure damaging organs,Headache;Dizziness;ChestPain;ShortnessOfBreath;BlurredVision;Nausea,ACEInhibitors;BetaBlockers;LifestyleChanges
+HeartFailure,DOID:6000,Cardiovascular,Inability of the heart to pump sufficient blood to the body,ShortnessOfBreath;Fatigue;SwollenAnkles;Dizziness;ChestPain;Palpitations,ACEInhibitors;Diuretics;BetaBlockers
+CoronaryArteryDisease,DOID:3393,Cardiovascular,Narrowing of coronary arteries reducing blood flow to the heart,ChestPain;ShortnessOfBreath;Fatigue;Palpitations;Dizziness;LeftArmPain,Statins;Aspirin;Angioplasty
+Stroke,DOID:6713,Cardiovascular,Interrupted blood supply to the brain causing neurological damage,SuddenHeadache;FacialDropping;ArmWeakness;SpeechDifficulty;VisionLoss;Confusion,Thrombolytics;Anticoagulants;Rehabilitation
+Arrhythmia,DOID:0060224,Cardiovascular,Irregular heartbeat pattern affecting cardiac output,Palpitations;Dizziness;ShortnessOfBreath;ChestPain;Fatigue;Fainting,Antiarrhythmics;Cardioversion;Pacemaker
+Migraine,DOID:6364,Neurological,A neurological disease with recurrent severe headaches and sensory disturbances,Headache;Nausea;Vomiting;LightSensitivity;Dizziness;VisualAura,Triptans;Ibuprofen;Rest
+Alzheimer,DOID:10652,Neurological,Progressive neurodegenerative disease causing memory loss and cognitive decline,MemoryLoss;Confusion;Disorientation;MoodChanges;SpeechDifficulty;Wandering,Donepezil;Memantine;CognitiveCare
+Epilepsy,DOID:1826,Neurological,Neurological disorder with recurrent unprovoked seizures,Seizures;LossOfConsciousness;Confusion;Fatigue;Anxiety;Staring,Valproate;Lamotrigine;Levetiracetam
+Parkinson,DOID:14330,Neurological,Progressive neurodegeneration causing motor control deterioration,Tremor;Rigidity;BradyKinesia;Imbalance;SpeechDifficulty;Constipation,Levodopa;Dopamine;PhysicalTherapy
+MultipleSclerosis,DOID:2377,Neurological,Autoimmune disease damaging the myelin sheath of nerve fibers,Fatigue;VisionProblems;Numbness;WeaknessInLimbs;Dizziness;SpasticityPain,Interferon;Natalizumab;PhysicalTherapy
+Meningitis,DOID:9471,Neurological,Inflammation of the membranes surrounding the brain and spinal cord,Headache;StiffNeck;Fever;Nausea;LightSensitivity;Confusion,Antibiotics;Corticosteroids;SupportiveCare
+Anemia,DOID:2355,Hematological,Deficiency of red blood cells or hemoglobin causing reduced oxygen delivery,Fatigue;Dizziness;ShortnessOfBreath;PaleSkin;WeakPulse;Palpitations,IronSupplements;VitaminB12;BloodTransfusion
+Leukemia,DOID:1240,Hematological,Cancer of blood-forming tissues impairing blood cell production,Fatigue;PaleSkin;FrequentInfections;EasyBruising;WeightLoss;BonePain,Chemotherapy;BoneMarrowTransplant;TargetedTherapy
+Hemophilia,DOID:2355,Hematological,Genetic disorder impairing blood clotting ability,EasyBruising;ProlongedBleeding;JointPain;JointSwelling;Fatigue;BloodInUrine,FactorReplacement;Desmopressin;Antifibrinolytics
+RheumatoidArthritis,DOID:7148,Autoimmune,Chronic inflammatory autoimmune disease attacking joints,JointPain;JointSwelling;Fatigue;Fever;BodyStiffness;Redness,Methotrexate;NSAIDs;Corticosteroids
+Lupus,DOID:9074,Autoimmune,Systemic autoimmune disease damaging multiple organs and tissues,SkinRash;JointPain;Fatigue;Fever;ChestPain;HairLoss,Hydroxychloroquine;Corticosteroids;Immunosuppressants
+Psoriasis,DOID:8893,Autoimmune,Chronic autoimmune disease causing rapid skin cell buildup,SkinRash;Itching;DrySkin;JointPain;Fatigue;Redness,Methotrexate;Biologics;TopicalSteroids
+CeliacDisease,DOID:10608,Autoimmune,Immune reaction to gluten causing intestinal damage,AbdominalPain;Diarrhea;Bloating;WeightLoss;Fatigue;Anemia,GlutenFreeDiet;VitaminSupplements;IronSupplements
+Sarcoidosis,DOID:13406,Autoimmune,Inflammatory disease with granuloma formation in multiple organs,Fatigue;ShortnessOfBreath;SkinRash;Cough;JointPain;SwollenLymphNodes,Corticosteroids;Methotrexate;Hydroxychloroquine
+Appendicitis,DOID:8337,Surgical,Acute inflammation of the appendix requiring urgent surgical intervention,AbdominalPain;Nausea;Vomiting;Fever;LossOfAppetite;Rigidity,Surgery;Antibiotics;PainRelief
+GallstoneDisease,DOID:9562,Surgical,Formation of gallstones causing biliary pain and obstruction,AbdominalPain;Nausea;Vomiting;Jaundice;Fever;BackPain,Cholecystectomy;Ursodeoxycholic;PainRelief
+KidneyStones,DOID:1546,Surgical,Solid mineral deposits in the kidneys causing severe pain,SeverePain;BloodInUrine;Nausea;Vomiting;FrequentUrination;BackPain,Lithotripsy;Surgery;Fluids
+HerniatedDisc,DOID:1595,Surgical,Rupture of intervertebral disc causing nerve compression,BackPain;LegPain;Numbness;WeaknessInLimbs;Tingling;LimitedMovement,PhysicalTherapy;Corticosteroids;Surgery
+KidneyDisease,DOID:557,Renal,Progressive loss of kidney function causing systemic complications,FrequentUrination;Fatigue;SwollenAnkles;BackPain;Nausea;Hypertension,Dialysis;ACEInhibitors;DietControl
+Osteoporosis,DOID:11476,Musculoskeletal,Metabolic bone disease with decreased bone density and fracture risk,BonePain;BackPain;Fractures;PostureLoss;HeightReduction;Fatigue,Bisphosphonates;CalciumSupplements;VitaminD
